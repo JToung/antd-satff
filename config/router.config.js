@@ -86,9 +86,9 @@ export default [
             component: './Category/Category/details/delete',
           },
           {
-            path: '/category/editor-categroy/:_id',
-            name: 'editor-categroy',
-            component: './Category/Category/details/editor',
+            path: '/category/examine-categroy/:_id',
+            name: 'examine-categroy',
+            component: './Category/Category/details/examine',
           },
           {
             path: '/category/new-categroy',

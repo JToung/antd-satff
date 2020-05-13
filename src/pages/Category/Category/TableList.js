@@ -21,7 +21,7 @@ import {
   Divider,
   Steps,
   Radio,
-  Table
+  Table,
 } from 'antd';
 // import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -38,13 +38,13 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['error', 'success'];
-const status = ['未上架', '已上架'];
+const statusMap = [ 'warning', 'success','error'];
+const status = ['未审核', '审核通过','审核未通过' ];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ category, loading }) => ({
   category,
-  loading: loading.effects['category/fetchCategory'],
+  loading: loading.effects['category/fetchAdjust'],
   //model
 }))
 @Form.create()
@@ -56,13 +56,14 @@ class TableList extends PureComponent {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
+    queryadjust: [],
   };
 
   columns = [
     {
       title: '品类ID',
-      dataIndex: '_id',
-      key: '_id',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: '品类名称',
@@ -70,28 +71,29 @@ class TableList extends PureComponent {
       key: 'categoryName',
     },
     {
-      title: '品类简介',
-      dataIndex: 'categoryIntrod',
-      key: 'categoryIntrod',
-    },
-    {
-      title: '上架状态',
-      dataIndex: 'categoryState',
-      key: 'categoryState',
+      title: '审核状态',
+      dataIndex: 'auditStatus',
+      key: 'auditStatus',
       render(val) {
-        // return <Badge status={statusMap[val]} text={status[val]} />;
-        return <Badge status={'success'} text={'已上架'} />;
+        return <Badge status={statusMap[val]} text={status[val]} />;
       },
     },
     {
-      title: '品类产生时间',
-      dataIndex: 'categoryAddTime',
-      key: 'categoryAddTime',
+      title: '审核时间',
+      dataIndex: 'auditTime',
+      key: 'auditTime',
+      render: val => this.getVal(val),
+    },
+    {
+      title: '品类申请审核时间',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
       render: val => (
         <span>
-          {moment(val)
+          {/* {moment(val)
             .subtract(8, 'hours')
-            .format('YYYY-MM-DD HH:mm:ss')}
+            .format('YYYY-MM-DD HH:mm:ss')} */}
+          {moment(val).format('YYYY-MM-DD HH:mm:ss')}
         </span>
       ),
     },
@@ -99,69 +101,45 @@ class TableList extends PureComponent {
       title: '操作',
       render: val => (
         <Fragment>
-          {console.log('val',val)}
-          <Link to={`/category/editor-categroy/${val._id}`}>审核</Link>
+          {console.log('val', val)}
+          {this.getCz(val)}
           <Divider type="vertical" />
           <Link to={`/category/view-categroy/${val._id}`}>查看</Link>
           <Divider type="vertical" />
-          {/* <Link to={`/category/delete-categroy/${val._id}`}>删除</Link>
-          <Divider type="vertical" />
-          {this.initialValue(val)} */}
         </Fragment>
       ),
     },
   ];
 
-  initialValue(val){
-    if(val.categoryState =="0"){
-      return <Link to={`/category/uporoff-categroy/${val._id}`}>上架</Link>
-    }else if(val.categoryState =="1"){
-      return <Link to={`/category/uporoff-categroy/${val._id}`}>下架</Link>
-    }
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     const params = {
-      categoryOperator: localStorage.getItem('userId'),
+      object: 'c',
     };
     dispatch({
-      type: 'category/fetchCategory',
+      type: 'category/fetchAdjust',
       payload: params,
+    }).then(res => {
+      console.log('res：', res);
+      console.log('queryadjust', this.state.queryadjust);
+      res.findResult.map(findResult => {
+        const findResultD = {
+          categoryName: findResult.changedData.categoryName,
+          auditTime: findResult.auditTime,
+          id: findResult.objectId,
+          auditStatus: findResult.auditStatus,
+          timestamp: findResult.timestamp,
+          _id: findResult._id,
+        };
+        const { queryadjust } = this.state;
+        this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
+          console.log('测试');
+        });
+      });
+      console.log('queryadjust', this.state.queryadjust);
     });
+    console.log('queryadjust', this.state.queryadjust);
   }
-
-  handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
-
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      console.log('key', key);
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
-
-    const params = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
-      categoryOperator: localStorage.getItem('userId'),
-      ...formValues,
-      ...filters,
-    };
-    if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
-    }
-
-    // dispatch({
-    //   type: 'rule/fetch',
-    //   payload: params,
-    // });
-    dispatch({
-      type: 'category/fetchCategory',
-      payload: params,
-    });
-  };
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -170,13 +148,73 @@ class TableList extends PureComponent {
       formValues: {},
     });
     const params = {
-      categoryOperator: localStorage.getItem('userId'),
+      object: 'c',
     };
     dispatch({
-      type: 'category/fetchCategory',
+      type: 'category/fetchAdjust',
       payload: params,
+    }).then(res => {
+      console.log('res：', res);
+      console.log('queryadjust', this.state.queryadjust);
+      this.setState({ queryadjust: [] }, () => {
+        console.log('handleFormReset');
+      });
+      res.findResult.map(findResult => {
+        const findResultD = {
+          categoryName: findResult.changedData.categoryName,
+          auditTime: findResult.auditTime,
+          id: findResult.objectId,
+          auditStatus: findResult.auditStatus,
+          timestamp: findResult.timestamp,
+          _id: findResult._id,
+        };
+        const { queryadjust } = this.state;
+        this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
+          console.log('测试');
+        });
+      });
+      console.log('queryadjust', this.state.queryadjust);
     });
   };
+
+  getVal(val) {
+    console.log(val);
+    switch (val) {
+      case undefined:
+        return <span>未审核</span>;
+        break;
+      default:
+        return (
+          <span>
+            {/* {moment(val)
+              .subtract(8, 'hours')
+              .format('YYYY-MM-DD HH:mm:ss')} */}
+            {moment(val).format('YYYY-MM-DD HH:mm:ss')}
+          </span>
+        );
+    }
+  }
+
+  getCz(val) {
+    console.log(val);
+    switch (val.auditStatus) {
+      case '0':
+        return (
+          <span>
+            <Divider type="vertical" />
+            <Link to={`/category/examine-categroy/${val._id}`}>审核</Link>
+          </span>
+        );
+        break;
+      default:
+        return (
+          <span>
+            <Divider type="vertical" />
+            已审
+          </span>
+        );
+    }
+  }
 
   toggleForm = () => {
     const { expandForm } = this.state;
@@ -201,6 +239,7 @@ class TableList extends PureComponent {
 
       const values = {
         ...fieldsValue,
+        object: 'c',
       };
 
       console.log('fieldsValue', values);
@@ -215,11 +254,36 @@ class TableList extends PureComponent {
       // });
       const payload = {
         ...values,
-        categoryOperator: localStorage.getItem('userId'),
       };
       dispatch({
-        type: 'category/fetchCategory',
+        type: 'category/fetchAdjust',
         payload: payload,
+      }).then(res => {
+        console.log('res：', res);
+        console.log('queryadjust', this.state.queryadjust);
+        this.setState({ queryadjust: [] }, () => {
+          console.log('handleSearch');
+        });
+        if (res.status == '3') {
+          this.setState({ queryadjust: [] }, () => {
+            console.log('handleSearch2');
+          });
+        } else {
+          res.findResult.map(findResult => {
+            const findResultD = {
+              categoryName: findResult.changedData.categoryName,
+              auditTime: findResult.auditTime,
+              id: findResult.objectId,
+              auditStatus: findResult.auditStatus,
+              timestamp: findResult.timestamp,
+            };
+            const { queryadjust } = this.state;
+            this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
+              console.log('handleSearch');
+            });
+          });
+        }
+        console.log('handleSearch', this.state.queryadjust);
       });
     });
   };
@@ -285,12 +349,14 @@ class TableList extends PureComponent {
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="审核状态">
-              {getFieldDecorator('categoryState')(
+              {getFieldDecorator('auditStatus')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">未上架</Option>
-                  <Option value="1">已上架</Option>
+                  <Option value="0">未审核</Option>
+                  <Option value="1">审核已通过</Option>
+                  <Option value="2">审核未通过</Option>
                 </Select>
               )}
+              {console.log}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -318,6 +384,7 @@ class TableList extends PureComponent {
 
   render() {
     const { category = {}, loading } = this.props;
+    const { queryadjust } = this.state;
     console.log('categoryListrender', category);
     console.log('loading', loading);
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
@@ -348,10 +415,10 @@ class TableList extends PureComponent {
               selectedRows={selectedRows}
               rowKey="_id"
               loading={loading}
-              dataSource={this.queryDate(category)}
+              // dataSource={this.queryDate(category)}
+              dataSource={queryadjust}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
             />
             {console.log('categoryList', category.data.res)}
           </div>

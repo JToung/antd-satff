@@ -1,10 +1,15 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
-import { OPERATOR_URL } from '../utils/Constants';
+import { OPERATOR_URL, platform_URL } from '../utils/Constants';
 import ajax from './ajax';
 
 //查询运营商
 export async function queryOperator(id) {
+  console.log('api', id);
+  return request(`${OPERATOR_URL}/manager/queryoperator?_id=${id}`);
+}
+//查询平台商
+export async function queryStaff(id) {
   console.log('api', id);
   return request(`${OPERATOR_URL}/manager/queryoperator?_id=${id}`);
 }
@@ -150,6 +155,21 @@ export async function upInterrupt(params) {
   });
 }
 
+//审核列表
+export async function queryAdjust(params) {
+  console.log('api1', params);
+  return request(`${platform_URL}/platform/queryadjust?${stringify(params)}`);
+}
+
+//审核品类
+//params.id = 中断要求id
+export async function verifyCategory(params) {
+  return request(`${platform_URL}/platform/verifycategory?_id=${params.id}`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -268,7 +288,7 @@ export async function fakeRegister(params) {
 
 export async function fakeLogin(params) {
   console.log('params', params);
-  return request(`${OPERATOR_URL}/operator/signin`, {
+  return request(`${platform_URL}/platform/signin`, {
     method: 'POST',
     body: params,
   });
@@ -277,7 +297,7 @@ export async function fakeLogin(params) {
 
 export async function getCaptcha() {
   // console.log('img', request(`${OPERATOR_URL}/operator/signin`));
-  return request(`${OPERATOR_URL}/operator/signin`);
+  return request(`${platform_URL}/platform/signin`);
 }
 
 export async function queryNotices(params = {}) {

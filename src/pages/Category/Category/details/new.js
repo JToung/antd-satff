@@ -71,7 +71,7 @@ class New extends PureComponent {
     this.props.form.validateFields((err, values) => {
       const payload = {
         ...values,
-        categoryAddTime: new Date(),
+        categoryAddTime: new Date().getTime(),
         categoryOperator: localStorage.getItem('userId'),
         categoryState: '0',
         categoryExamineTF:'0',

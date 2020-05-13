@@ -70,7 +70,7 @@ class Update extends PureComponent {
     this.props.form.validateFields((err, values) => {
       const payload = {
         ...values,
-        operatorReviseTime: new Date(),
+        operatorReviseTime: new Date().getTime(),
         id: localStorage.getItem('userId'),
         account: values.legalPersonEmail,
       };

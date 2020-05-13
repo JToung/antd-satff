@@ -45,7 +45,8 @@ class Center extends PureComponent {
 
     dispatch({
       type: 'operator/fetchOperator',
-      payload: params.id || localStorage.getItem('userId'),
+      // payload: params.id || localStorage.getItem('userId'),
+      payload: params.id || '5ead80ee74243c4bc453abfd',
     });
 
     // console.log('this.props.data',this.props.data);

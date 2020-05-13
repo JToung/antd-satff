@@ -113,7 +113,7 @@ class Editor extends PureComponent {
           categoryMaxTaskTime: res1.categoryMaxTaskTime,
           categoryMinPrice: res1.categoryMinPrice,
           categoryMaxPrice: res1.categoryMaxPrice,
-          categoryDeleteTime: new Date(),
+          categoryDeleteTime: new Date().getTime(),
           id: this.props.match.params._id,
         };
         console.log('参数', payload);

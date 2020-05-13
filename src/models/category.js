@@ -1,4 +1,12 @@
-import { addCategory, queryCategory, editorCategory, deleteCategory, uporoffCategory } from '@/services/api';
+import {
+  addCategory,
+  queryCategory,
+  editorCategory,
+  deleteCategory,
+  uporoffCategory,
+  queryAdjust,
+  verifyCategory,
+} from '@/services/api';
 
 export default {
   namespace: 'category',
@@ -57,6 +65,27 @@ export default {
         payload: response,
       });
       console.log('uporoffCategoryResponse', response);
+      return response;
+    },
+    //审核
+    *fetchAdjust({ payload }, { call, put }) {
+      console.log('payload1', payload);
+      const response = yield call(queryAdjust, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryAdjust1', response);
+      return response;
+    },
+    *verifyCategory({ payload }, { call, put }) {
+      console.log('payload1', payload);
+      const response = yield call(verifyCategory, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('verifyCategory', response);
       return response;
     },
   },

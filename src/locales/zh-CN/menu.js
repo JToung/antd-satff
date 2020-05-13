@@ -18,7 +18,7 @@ export default {
   'menu.category.list': '服务品类列表',
   'menu.category.view-categroy': '服务品类包信息',
   'menu.category.delete-categroy': '服务品类包删除',
-  'menu.category.editor-categroy': '服务品类包审核',
+  'menu.category.examine-categroy': '服务品类包审核',
   'menu.category.new-categroy': '新建服务品类包',
   'menu.category.uporoff-categroy': '上/下架服务品类包',
   'menu.messages': '消息管理',

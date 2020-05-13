@@ -1,5 +1,19 @@
 import React, { PureComponent } from 'react';
-import { Table, Tag, Descriptions, Badge, Card, Modal, Button, Divider } from 'antd';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Table,
+  Tag,
+  Descriptions,
+  Badge,
+  Card,
+  Modal,
+  Button,
+  Divider,
+  message
+} from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './style.less';
@@ -14,6 +28,7 @@ import Link from 'umi/link';
   loading: loading.effects['category/fetchAdjust'],
   //model
 }))
+@Form.create()
 class View extends PureComponent {
   constructor(props) {
     super(props);
@@ -55,7 +70,6 @@ class View extends PureComponent {
           payload: params1,
         }).then(res => {
           const adjust = res.findResult[0];
-          console.log('componentDidMountres123：', res);
           setTimeout(
             () =>
               this.setState({ adjust: adjust }, () => {
@@ -68,12 +82,83 @@ class View extends PureComponent {
     );
   }
 
+  handleSubmit1 = e => {
+    const { dispatch, match } = this.props;
+    const { params } = match;
+    // e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      const payload = {
+        ...values,
+        auditTime: new Date().getTime(),
+        auditStatus: '1',
+        id: this.props.match.params._id,
+        auditorID: localStorage.getItem('userId'),
+      };
+
+      console.log('values', values);
+      if (err) {
+        console.log('err' + err);
+        return;
+      }
+      // if (!err) {
+      //   console.log('receive the value of input ' + values);
+      // }
+      console.log('参数', payload);
+
+      dispatch({
+        type: 'category/verifyCategory',
+        payload,
+      }).then(res => {
+        console.log('res', res);
+        if (res.status != "0") {
+          message.success(res.information);
+          this.props.history.push('/category/list');
+        } else {
+          message.error(res.information);
+        }
+      });
+    });
+  };
+
+  handleSubmit0 = e => {
+    const { dispatch, match } = this.props;
+    const { params } = match;
+    // e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      const payload = {
+        ...values,
+        auditTime: new Date().getTime(),
+        auditStatus: '2',
+        id: this.props.match.params._id,
+        auditorID: localStorage.getItem('userId'),
+      };
+
+      console.log('values', values);
+      if (err) {
+        console.log('err' + err);
+        return;
+      }
+      // if (!err) {
+      //   console.log('receive the value of input ' + values);
+      // }
+      console.log('参数', payload);
+
+      dispatch({
+        type: 'category/verifyCategory',
+        payload,
+      }).then(res => {
+        console.log('res', res);
+        if (res.status != "0") {
+          message.success(res.information);
+          this.props.history.push('/category/list');
+        } else {
+          message.error(res.information);
+        }
+      });
+    });
+  };
+
   onState(categoryState) {
-    // if (categoryState == '1') {
-    //   return <Badge status="success" text="已上架" />;
-    // } else {
-    //   return <Badge status="error" text="未上架" />;
-    // }
     switch (categoryState) {
       case '0':
         return <Badge status="error" text="未审核" />;
@@ -90,7 +175,10 @@ class View extends PureComponent {
   }
 
   render() {
-    const { loading } = this.props;
+    const {
+      loading,
+      form: { getFieldDecorator },
+    } = this.props;
     const { adjust } = this.state;
     // console.log('operator.date',operator);
     if (adjust._id == null) {
@@ -98,9 +186,7 @@ class View extends PureComponent {
         // 加头部
         <PageHeaderWrapper title={<FormattedMessage id="app.categoty.basic.title" />}>
           <Card bordered={false}>
-            <Descriptions title="服务品类包信息" bordered loading={loading}>
-              
-            </Descriptions>
+            <Descriptions title="服务品类包信息" bordered loading={loading} />
             <Card>
               <Button
                 type="primary"
@@ -136,7 +222,12 @@ class View extends PureComponent {
               </Descriptions.Item>
             </Descriptions>
             <br />
-            <Descriptions title="品类规范（用于品类下级单品规范）" bordered loading={loading} layout="vertical">
+            <Descriptions
+              title="品类规范（用于品类下级单品规范）"
+              bordered
+              loading={loading}
+              layout="vertical"
+            >
               <Descriptions.Item label="规范必要说明" span={3}>
                 {adjust.changedData.categoryExplanation}
               </Descriptions.Item>
@@ -186,17 +277,73 @@ class View extends PureComponent {
                 {adjust.changedData.categoryReason}
               </Descriptions.Item>
             </Descriptions>
-            <Card>
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.props.history.push('/category/list');
-                }}
-                className={styles.ButtonCenter}
-              >
-                返回
-              </Button>
-            </Card>
+            <Form layout="vertical">
+              <Card bordered={false}>
+                <Form.Item label="通过/不通过审核理由">
+                  {getFieldDecorator('reason', {
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入理由',
+                      },
+                    ],
+                  })(
+                    <Input.TextArea style={{ minHeight: 32 }} placeholder="请输入理由" rows={4} />
+                  )}
+                </Form.Item>
+              </Card>
+              <Card bordered={false}>
+                <div>
+                  <Row gutter={16}>
+                    <Col lg={8} md={12} sm={24}>
+                      <Form.Item>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          className={styles.ButtonCenter}
+                          loading={loading}
+                          onClick={() => {
+                            this.handleSubmit1();
+                          }}
+                        >
+                          通过审核
+                        </Button>
+                      </Form.Item>
+                    </Col>
+                    <Col lg={8} md={12} sm={24}>
+                      <Form.Item>
+                        <Button
+                          type="danger"
+                          htmlType="submit"
+                          className={styles.ButtonCenter}
+                          loading={loading}
+                          onClick={() => {
+                            this.handleSubmit0();
+                          }}
+                        >
+                          不通过审核
+                        </Button>
+                      </Form.Item>
+                    </Col>
+                    <Col xl={{ span: 6 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+                      <Form.Item>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          className={styles.ButtonCenter}
+                          onClick={() => {
+                            this.props.history.push('/category/list');
+                          }}
+                          loading={loading}
+                        >
+                          返回首页
+                        </Button>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </div>
+              </Card>
+            </Form>
           </Card>
         </PageHeaderWrapper>
       );
