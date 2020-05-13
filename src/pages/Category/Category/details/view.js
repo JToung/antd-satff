@@ -76,13 +76,13 @@ class View extends PureComponent {
     // }
     switch (categoryState) {
       case '0':
-        return <Badge status="error" text="未审核" />;
+        return <Badge status="warning" text="未审核" />;
         break;
       case '1':
         return <Badge status="success" text="审核通过" />;
         break;
       case '2':
-        return <Badge status="warning" text="审核未通过" />;
+        return <Badge status="error" text="审核未通过" />;
         break;
       default:
         return null;

@@ -276,6 +276,7 @@ class TableList extends PureComponent {
               id: findResult.objectId,
               auditStatus: findResult.auditStatus,
               timestamp: findResult.timestamp,
+              _id: findResult._id,
             };
             const { queryadjust } = this.state;
             this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
