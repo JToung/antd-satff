@@ -98,6 +98,21 @@ class LoginPage extends Component {
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   );
 
+  getCode() {
+    if (this.state.code.verify_image != null) {
+      /* 转HTML语言 */
+      return (
+        <div
+          onClick={this.onGetCaptcha}
+          dangerouslySetInnerHTML={{ __html: this.state.code.verify_image }}
+        />
+      );
+    } else {
+      /* 转HTML语言 */
+      return <div />;
+    }
+  }
+
   render() {
     const {
       login1,
@@ -153,11 +168,7 @@ class LoginPage extends Component {
                   })(<Input placeholder="验证码" size="large" prefix={<RocketOutlined />} />)}
                 </Col>
                 <Col span={9}>
-                  {/* 转HTML语言 */}
-                  <div
-                    onClick={this.onGetCaptcha}
-                    dangerouslySetInnerHTML={{ __html: this.state.code.verify_image }}
-                  />
+                  {this.getCode()}
                 </Col>
               </Row>
             </Form.Item>

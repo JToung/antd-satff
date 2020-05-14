@@ -130,6 +130,7 @@ class View extends PureComponent {
         auditTime: new Date().getTime(),
         auditStatus: '2',
         id: this.props.match.params._id,
+        object:"c",
         auditorID: localStorage.getItem('userId'),
       };
 
