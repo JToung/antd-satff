@@ -11,7 +11,7 @@ class ItemL extends Component {
   render() {
     return (
       <PageHeaderWrapper
-        title={<FormattedMessage id="app.categoty.list.title" />}
+        title={<FormattedMessage id="app.operator.list.title" />}
       >
         <TableList/>
       </PageHeaderWrapper>

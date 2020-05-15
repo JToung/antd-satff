@@ -39,7 +39,7 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 const statusMap = ['error', 'success'];
-const status = ['未上架', '已上架'];
+const status = ['未运行', '正在运行'];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ operator, loading }) => ({
@@ -218,8 +218,8 @@ class TableList extends PureComponent {
             <FormItem label="运营商状态">
               {getFieldDecorator('operatorState')(
                 <Select placeholder="请选择">
-                  <Option value="0">未上架</Option>
-                  <Option value="1">已上架</Option>
+                  <Option value="0">未运行</Option>
+                  <Option value="1">正在运行</Option>
                 </Select>
               )}
             </FormItem>

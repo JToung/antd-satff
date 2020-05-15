@@ -172,10 +172,16 @@ export async function queryOperator(params) {
   return request(`${platform_URL}/platform/queryoperator?${stringify(params)}`);
 }
 
-//查看工单列表
+//查看工单
 export async function queryWorkorder(params) {
   console.log('api', params);
-  return request(`${OPERATOR_URL}/manager/queryworkorder?${stringify(params)}`);
+  return request(`${platform_URL}/platform/queryworkorder?${stringify(params)}`);
+}
+
+//查看订单列表
+export async function queryOrder(params) {
+  console.log('api', params);
+  return request(`${platform_URL}/platform/queryorder?${stringify(params)}`);
 }
 
 //查看单个分区
@@ -183,6 +189,8 @@ export async function queryPartition(params) {
   console.log('api', params);
   return request(`${OPERATOR_URL}/manager/querypartition?_id=${params.id}`);
 }
+
+
 
 //分单-专才列表 传入工单id
 export async function queryAssign(params) {

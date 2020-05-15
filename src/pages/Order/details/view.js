@@ -9,11 +9,15 @@ import memoryUtils from '@/utils/memoryUtils';
 import moment from 'moment';
 import Link from 'umi/link';
 
-const statusMap = ['red', 'green', 'yellow', 'cyan', 'geekblue'];
-const status = ['结束', '进行中', '待分配', '用户终止', '等待启动'];
+const statusMap = ['lime', 'yellow', 'cyan', 'geekblue','red','green' ];
+const status = ['接单尚未变为工单', '已接单且已变为便为工单', '已接单且已分配专才', '订单确认开始','订单取消', '订单完成'];
+const statusStartMap = ['yellow', 'green' ];
+const statusStart = ['专才接单后默认服务开始', '要客户确认后订服务才开始'];
+const workorderStatusMap = ['red', 'green', 'yellow', 'cyan', 'geekblue'];
+const workorderStatus = ['结束', '进行中', '待分配', '用户终止', '等待启动'];
 @connect(({ item, loading }) => ({
   item,
-  loading: loading.effects['workorder'],
+  loading: loading.effects['order'],
   //model
 }))
 class ViewItem extends PureComponent {
@@ -83,6 +87,8 @@ class ViewItem extends PureComponent {
     this.state = {
       //存储工单信息
       Workorder: {},
+      //存储订单信息
+      order: {},
       //存储单品中断处理表状态
       interruptData: [],
       //分区名
@@ -120,29 +126,49 @@ class ViewItem extends PureComponent {
 
     const { dispatch } = this.props;
     const params = {
-      operatorID: localStorage.getItem('userId'),
       _id: this.props.match.params._id,
     };
     dispatch({
-      type: 'workorder/queryWorkorder',
+      type: 'order/queryOrder',
       payload: params,
     }).then(res => {
-      this.setState({ Workorder: res.findResult[0] });
+      this.setState({ order: res.findResult[0] });
       const params1 = {
-        id: res.findResult[0].itemPartition,
+        id: res.findResult[0].partitionId,
       };
       console.log(params1)
       dispatch({
-        type: 'workorder/queryPartition',
+        type: 'order/queryPartition',
         payload: params1,
       }).then(res => {
         this.setState({ partitionsName: res.findResult.name });
       });
     });
+    const params1 = {
+      orderId: this.props.match.params._id,
+    };
+    dispatch({
+      type: 'order/queryWorkorder',
+      payload: params,
+    }).then(res => {
+      if(res.status == '1'){
+        this.setState({ Workorder: res.findResult[0] });
+      }else{
+        this.setState({ Workorder: [] });
+      }
+    });
   }
 
   onState(state) {
     return <Badge color={statusMap[state]} text={status[state]} />;
+  }
+
+  onStateStart(state) {
+    return <Badge color={statusStartMap[state]} text={statusStart[state]} />;
+  }
+
+  onWorkorderState(state) {
+    return <Badge color={workorderStatusMap[state]} text={workorderStatus[state]} />;
   }
 
   //查看单品分区
@@ -182,34 +208,35 @@ class ViewItem extends PureComponent {
   };
 
   re = () => {
-    const { workorder = {}, loading } = this.props;
-    const { partitions, Workorder, interruptData, partitionsName } = this.state;
+    const { loading } = this.props;
+    const { partitions, order, interruptData, partitionsName } = this.state;
     return (
       // 加头部
-      <PageHeaderWrapper title={<FormattedMessage id="app.workorder.basic.title" />}>
+      <PageHeaderWrapper title={<FormattedMessage id="app.order.basic.title" />}>
         <Card bordered={false}>
-          <Descriptions title="工单信息" bordered loading={loading} layout="vertical">
-            <Descriptions.Item label="工单ID">{Workorder._id}</Descriptions.Item>
-            <Descriptions.Item label="工单名">{Workorder.name}</Descriptions.Item>
-            <Descriptions.Item label="订单id">{Workorder.orderID}</Descriptions.Item>
-            <Descriptions.Item label="工单起始时间" span={3}>
-              {moment(Workorder.startTime).format('YYYY-MM-DD HH:mm:ss')}
+          <Descriptions title="订单信息" bordered loading={loading} layout="vertical">
+            <Descriptions.Item label="订单ID">{order.orderId}</Descriptions.Item>
+            <Descriptions.Item label="购买分区名">{this.state.partitionsName}</Descriptions.Item>
+            <Descriptions.Item label="购买数量">{order.purchaseQuantity}</Descriptions.Item>
+            <Descriptions.Item label="订单下单时间" span={3}>
+              {moment(order.orderTime).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
-            <Descriptions.Item label="工单状态">{this.onState(Workorder.state)}</Descriptions.Item>
-            <Descriptions.Item label="所属分区名" span={2}>
+            <Descriptions.Item label="订单状态" span={3}>{this.onState(order.orderState)}</Descriptions.Item>
+            <Descriptions.Item label="订单开始状态" span={3}>{this.onStateStart(order.orderStartState)}</Descriptions.Item>
+            <Descriptions.Item label="所属分区名" span={3}>
               {this.state.partitionsName}
             </Descriptions.Item>
-            <Descriptions.Item label="专才id" span={3}>
-              {Workorder.servicer}
+            <Descriptions.Item label="买家id">
+              {order.customerId}
             </Descriptions.Item>
-            <Descriptions.Item label="服务启动时间" span={3}>
-            {moment(Workorder.serverTime).format('YYYY-MM-DD HH:mm:ss')}
+            <Descriptions.Item label="联系方式" span={2}>
+              {order.phone}
             </Descriptions.Item>
-            <Descriptions.Item label="客户要求" span={3}>
-              {Workorder.requirement}
+            <Descriptions.Item label="服务要求" span={3}>
+              {order.remark}
             </Descriptions.Item>
-            <Descriptions.Item label="客户电话" span={3}>
-              {Workorder.customerPhone}
+            <Descriptions.Item label="相应工单" span={3}>
+              {order.remark}
             </Descriptions.Item>
           </Descriptions>
           <div>
@@ -217,7 +244,7 @@ class ViewItem extends PureComponent {
               <Button
                 type="primary"
                 onClick={() => {
-                  this.props.history.push('/workorder/list');
+                  this.props.history.push('/order/list');
                 }}
                 className={styles.ButtonCenter}
               >
@@ -231,17 +258,17 @@ class ViewItem extends PureComponent {
   };
 
   render() {
-    const { workorder = {}, loading } = this.props;
-    const { partitions, Workorder, interruptData } = this.state;
+    const { loading } = this.props;
+    const { partitions, order, interruptData } = this.state;
 
-    console.log('workorder', Workorder);
-    if (Workorder == null) {
+    console.log('order', order);
+    if (order == null) {
       if (this.props.match.params._id == null) {
-        this.props.history.push('/workorder/list');
+        this.props.history.push('/order/list');
       } else {
         return <div>{this.re()}</div>;
       }
-    } else if (Workorder != null) {
+    } else if (order != null) {
       return <div>{this.re()}</div>;
     }
   }
