@@ -3,6 +3,30 @@ import request from '@/utils/request';
 import { OPERATOR_URL, platform_URL } from '../utils/Constants';
 import ajax from './ajax';
 
+//查询信息
+export async function queryNews(params) {
+  console.log('api', params);
+  return request(
+    `${OPERATOR_URL}/manager/getnews?verifiedData.categoryOperator=${params.operator}&read=${
+      params.read
+    }`
+  );
+}
+
+//查询单个信息
+export async function queryOneNews(params) {
+  console.log('queryOneNews', params.id);
+  return request(`${OPERATOR_URL}/manager/getnews?_id=${params.id}`);
+}
+
+//更新消息已读
+export async function setRead(params) {
+  console.log('setRead', params.id);
+  return request(`${OPERATOR_URL}/manager/setread?_id=${params.id}`, {
+    method: 'POST',
+    body: params,
+  });
+}
 
 //查询平台商
 export async function queryStaff(id) {
