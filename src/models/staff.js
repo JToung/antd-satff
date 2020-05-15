@@ -1,4 +1,4 @@
-import { queryOperator , updateOperator , uplegalPersonPhoto} from '@/services/api';
+import { queryStaff , updateOperator , uplegalPersonPhoto} from '@/services/api';
 
 export default {
   namespace: 'staff',
@@ -11,12 +11,13 @@ export default {
   effects: {
     *fetchStaff({ payload }, { call, put }) {
       console.log('payload',payload);
-      const response = yield call(queryOperator, payload);
+      const response = yield call(queryStaff, payload);
       yield put({
         type: 'save',
         payload: response,
       });
       console.log('response',response);
+      return response;
     },
     *upOperator({ payload }, { call, put }) {
       console.log('payload1',payload);

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Card, Radio } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
-import styles from './Home.less';
+import styles from './style.less';
 import { Pie } from '@/components/Charts';
 import Yuan from '@/utils/Yuan';
 
@@ -10,7 +10,6 @@ const ProportionSales = memo(
     <Card
       loading={loading}
       className={styles.salesCard}
-      bordered={false}
       title={
         <FormattedMessage
           id="app.analysis.the-proportion-of-sales"

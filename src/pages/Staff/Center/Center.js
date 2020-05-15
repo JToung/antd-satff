@@ -9,9 +9,9 @@ import OPERATOR_USER from '@/utils/memoryUtils';
 import { OPERATOR_URL } from '@/utils/Constants';
 import moment from 'moment';
 
-@connect(({ operator, loading }) => ({
-  operator,
-  loading: loading.effects['operator/fetchOperator'],
+@connect(({ staff, loading }) => ({
+  staff,
+  loading: loading.effects['staff/fetchStaff'],
   //model
 }))
 class Center extends PureComponent {
@@ -44,63 +44,50 @@ class Center extends PureComponent {
     }
 
     dispatch({
-      type: 'operator/fetchOperator',
+      type: 'staff/fetchStaff',
       // payload: params.id || localStorage.getItem('userId'),
-      payload: params.id || '5ead80ee74243c4bc453abfd',
+      payload: params.id || localStorage.getItem('userId'),
     });
 
     // console.log('this.props.data',this.props.data);
   }
 
-  onOperatorState(operatorState) {
-    if (operatorState == '1') {
-      return <Badge status="success" text="运行中" />;
-    } else {
-      return <Badge status="error" text="已停止运行" />;
-    }
-  }
 
-  onExamineState(examineState) {
-    if (examineState == '1') {
-      return <Badge status="success" text="已通过" />;
-    } else if (examineState == '0') {
-      return <Badge status="error" text="未通过" />;
-    } else {
-      return <Badge status="warning" text="审核中" />;
-    }
-  }
 
   render() {
     const { previewVisible, previewImage } = this.state;
-    const { operator = {}, loading } = this.props;
-    console.log('loading',loading)
+    const { staff = {}, loading } = this.props;
+    console.log('staff',staff)
     // console.log('operator.date',operator);
     return (
       // 加头部
       <Card bordered={false}>
         <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
-          <Descriptions.Item label="平台管理人员ID">{operator.data._id}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员名">{operator.data.operatorName}</Descriptions.Item>
+          <Descriptions.Item label="平台管理人员ID">{staff.data.result._id}</Descriptions.Item>
+          <Descriptions.Item label="平台管理人员名">{staff.data.result.name}</Descriptions.Item>
           <Descriptions.Item label="平台管理人员证件照">
-            <img
+            {/* <img
               alt="example"
               style={{ width: 70, height: 70 }}
-              src={OPERATOR_URL + operator.data.legalPersonPhoto}
-            />
+              src={OPERATOR_URL + staff.data.legalPersonPhoto}
+            /> */}
           </Descriptions.Item>
           <Descriptions.Item label="注册时间">
-            {moment(operator.data.operatorAddTime)
+            {moment(staff.data.result.joinTime)
                   .subtract(8, 'hours')
                   .format('YYYY-MM-DD HH:mm:ss')}
           </Descriptions.Item>
           <Descriptions.Item label="平台管理人员身份证号">
-            {operator.data.legalPersonIdNo}
+            {staff.data.result.legalPersonIdNo}
           </Descriptions.Item>
           <Descriptions.Item label="平台管理人员联系方式">
-            {operator.data.legalPersonPhone}
+            {staff.data.result.phone}
           </Descriptions.Item>
-          <Descriptions.Item label="平台管理人员邮箱">{operator.data.legalPersonEmail}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员地址">{operator.data.legalPersonAdress}</Descriptions.Item>
+          <Descriptions.Item label="平台管理人员邮箱" span={3}>{staff.data.result.email}</Descriptions.Item>
+          <Descriptions.Item label="平台管理人员地址" span={3}>{staff.data.result.legalPersonAdress}</Descriptions.Item>
+          <Descriptions.Item label="平台管理人员详细信息" span={3}>
+            {staff.data.result.introduction}
+          </Descriptions.Item>
         </Descriptions>
         <Card>
           <Button

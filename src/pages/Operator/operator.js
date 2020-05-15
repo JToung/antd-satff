@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import router from 'umi/router';
-import { message  } from 'antd';
 import { connect } from 'dva';
 import { FormattedMessage } from 'umi-plugin-react/locale';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import OPERATOR_USER from '@/utils/memoryUtils';
+import {  message } from 'antd';
+
 
 @connect()
-class Staff extends Component {
+class IndexWorkorder extends Component {
   componentDidMount() {
     if (JSON.parse(localStorage.getItem('user')) === null) {
       message.error('未登录！！请登录！');
@@ -32,8 +31,8 @@ class Staff extends Component {
       case 'info':
         router.push(`${match.url}/info`);
         break;
-      case 'update':
-        router.push(`${match.url}/update`);
+      case 'list':
+        router.push(`${match.url}/list`);
         break;
       default:
         break;
@@ -47,20 +46,14 @@ class Staff extends Component {
   render() {
     const { match, children, location } = this.props;
     return (
-      <PageHeaderWrapper
-        title={<FormattedMessage id="app.staff.basic.title" />}
+      <div
         tabActiveKey={location.pathname.replace(`${match.path}/`, '')}
         onTabChange={this.handleTabChange}
       >
         {children}
-        {/* <Switch>
-          {routes.map(item => (
-            <Route key={item.key} path={item.path} component={item.component} exact={item.exact} />
-          ))}
-        </Switch> */}
-      </PageHeaderWrapper>
+      </div>
     );
   }
 }
 
-export default Staff;
+export default IndexWorkorder;

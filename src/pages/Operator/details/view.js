@@ -17,6 +17,7 @@ import moment from 'moment';
 class Center extends PureComponent {
   state = {
     previewVisible: false,
+    operator:{},
   };
 
 
@@ -43,9 +44,15 @@ class Center extends PureComponent {
       }
     }
 
+    const params1 = {
+      _id: this.props.match.params._id,
+    };
+
     dispatch({
       type: 'operator/fetchOperator',
-      payload: params.id || localStorage.getItem('userId'),
+      payload: params1,
+    }).then(res => {
+      this.setState({ operator: res.foundData[0] });
     });
 
     // console.log('this.props.data',this.props.data);
@@ -70,61 +77,61 @@ class Center extends PureComponent {
   }
 
   render() {
-    const { previewVisible, previewImage } = this.state;
-    const { operator = {}, loading } = this.props;
+    const { previewVisible, previewImage, operator } = this.state;
+    const {  loading } = this.props;
     console.log('loading',loading)
     // console.log('operator.date',operator);
     return (
       // 加头部
       <Card bordered={false}>
-        <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
-          <Descriptions.Item label="平台管理人员ID">{operator.data._id}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员名">{operator.data.operatorName}</Descriptions.Item>
+        <Descriptions title="运营商基础信息管理" bordered loading={loading}>
+          <Descriptions.Item label="运营商ID">{operator._id}</Descriptions.Item>
+          <Descriptions.Item label="运营商名">{operator.operatorName}</Descriptions.Item>
           <Descriptions.Item label="系统分成">在合约表（运营商约束）中</Descriptions.Item>
           <Descriptions.Item label="入驻时间" span={2}>
-            {moment(operator.data.operatorAddTime)
+            {moment(operator.operatorAddTime)
                   .subtract(8, 'hours')
                   .format('YYYY-MM-DD HH:mm:ss')}
           </Descriptions.Item>
           <Descriptions.Item label="运营商凭证"></Descriptions.Item>
           <Descriptions.Item label="运营商简介" span={3}>
-            {operator.data.operatorIntroduction}
+            {operator.operatorIntroduction}
           </Descriptions.Item>
           <Descriptions.Item label="运营商介绍" span={3}>
-            {operator.data.content}
+            {operator.content}
           </Descriptions.Item>
           <Descriptions.Item label="运行状态" span={3}>
-            {this.onOperatorState(operator.data.operatorState)}
+            {this.onOperatorState(operator.operatorState)}
           </Descriptions.Item>
-          <Descriptions.Item label="运营商法人">{operator.data.legalPerson}</Descriptions.Item>
+          <Descriptions.Item label="运营商法人">{operator.legalPerson}</Descriptions.Item>
           <Descriptions.Item label="法人身份信息">
-            {operator.data.legalPersonIdNo}
+            {operator.legalPersonIdNo}
           </Descriptions.Item>
           <Descriptions.Item label="法人联系方式">
-            {operator.data.legalPersonPhone}
+            {operator.legalPersonPhone}
           </Descriptions.Item>
           <Descriptions.Item label="法人证件照">
             <img
               alt="example"
               style={{ width: 70, height: 70 }}
-              src={OPERATOR_URL + operator.data.legalPersonPhoto}
+              src={OPERATOR_URL + operator.legalPersonPhoto}
             />
           </Descriptions.Item>
-          <Descriptions.Item label="法人邮箱">{operator.data.legalPersonEmail}</Descriptions.Item>
-          <Descriptions.Item label="法人地址">{operator.data.legalPersonAdress}</Descriptions.Item>
-          <Descriptions.Item label="审核状态" span={3}>
-            {this.onExamineState(operator.data.operatorState)}
-          </Descriptions.Item>
+          <Descriptions.Item label="法人邮箱">{operator.legalPersonEmail}</Descriptions.Item>
+          <Descriptions.Item label="法人地址">{operator.legalPersonAdress}</Descriptions.Item>
+          {/* <Descriptions.Item label="审核状态" span={3}>
+            {this.onExamineState(operator.operatorState)}
+          </Descriptions.Item> */}
         </Descriptions>
         <Card>
           <Button
             type="primary"
             onClick={() => {
-              this.props.history.push('/staff/center/update');
+              this.props.history.push('/operator/list');
             }}
             className={styles.ButtonCenter}
           >
-            修改运营商信息
+            返回列表
           </Button>
         </Card>
       </Card>

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Table, Row, Col, Card, Tabs, DatePicker } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import numeral from 'numeral';
-import styles from './Home.less';
+import styles from './style.less';
 import { Bar } from '@/components/Charts';
 import moment from 'moment';
 import DescriptionList from '@/components/DescriptionList';
@@ -18,58 +18,10 @@ for (let i = 0; i < 7; i += 1) {
   });
 }
 
-const columns = [
-  {
-    title: '时间',
-    dataIndex: 'updatedAt',
-    sorter: true,
-    render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-  },
-  {
-    title: '成交金额',
-    dataIndex: 'userPayable',
-    key: 'userPayable',
-  },
-  {
-    title: '运营商应收款',
-    dataIndex: 'operatorReceivable',
-    key: 'operatorReceivable',
-  },
-  {
-    title: '平台应收款',
-    dataIndex: 'serverReceivable',
-    key: 'serverReceivable',
-  },
-];
-
-const dataCS = [
-  {
-    key: '1',
-    updatedAt: 1573803368608,
-    userPayable: 1000,
-    operatorReceivable: 500,
-    serverReceivable: 400,
-  },
-  {
-    key: '2',
-    updatedAt: 1573803368608,
-    userPayable: 1000,
-    operatorReceivable: 500,
-    serverReceivable: 400,
-  },
-  {
-    key: '3',
-    updatedAt: 1573803368608,
-    userPayable: 1000,
-    operatorReceivable: 500,
-    serverReceivable: 400,
-  },
-];
-
 
 const SalesCard = memo(
   ({ rangePickerValue, salesData, isActive, handleRangePickerChange, loading, selectDate }) => (
-    <Card loading={loading} bordered={false} bodyStyle={{ padding: 0 }}>
+    <Card loading={loading} bodyStyle={{ padding: 0 }}>
       <div className={styles.salesCard}>
         <Tabs
           tabBarExtraContent={
@@ -99,8 +51,8 @@ const SalesCard = memo(
           tabBarStyle={{ marginBottom: 24 }}
         >
           <TabPane
-            tab={<FormattedMessage id="app.analysis.sales" defaultMessage="Sales" />}
-            key="sales"
+            tab={<FormattedMessage id="app.analysis.operator" defaultMessage="operator" />}
+            key="operator"
           >
             <Row>
               <Col xl={16} lg={12} md={12} sm={24} xs={24}>
@@ -109,8 +61,8 @@ const SalesCard = memo(
                     height={295}
                     title={
                       <FormattedMessage
-                        id="app.analysis.sales-trend"
-                        defaultMessage="Sales Trend"
+                        id="app.analysis.operator-trend"
+                        defaultMessage="operator Trend"
                       />
                     }
                     data={salesData}
@@ -121,8 +73,8 @@ const SalesCard = memo(
                 <div className={styles.salesRank}>
                   <h4 className={styles.rankingTitle}>
                     <FormattedMessage
-                      id="app.analysis.sales-ranking"
-                      defaultMessage="Sales Ranking"
+                      id="app.analysis.operator-ranking"
+                      defaultMessage="operator Ranking"
                     />
                   </h4>
                   <ul className={styles.rankingList}>
@@ -147,18 +99,18 @@ const SalesCard = memo(
             </Row>
           </TabPane>
           <TabPane
-            tab={<FormattedMessage id="app.analysis.volume" defaultMessage="Volume" />}
-            key="volume"
+            tab={<FormattedMessage id="app.analysis.operator-complete" defaultMessage="operator Complete" />}
+            key="operator Complete"
           >
             <Row>
               <Col xl={16} lg={12} md={12} sm={24} xs={24}>
                 <div className={styles.salesBar}>
                   <Bar
-                    height={292}
+                    height={295}
                     title={
                       <FormattedMessage
-                        id="app.analysis.volume-trend"
-                        defaultMessage="Volume Trend"
+                        id="app.analysis.operator-trend-complete"
+                        defaultMessage="operator Trend Complete"
                       />
                     }
                     data={salesData}
@@ -169,8 +121,8 @@ const SalesCard = memo(
                 <div className={styles.salesRank}>
                   <h4 className={styles.rankingTitle}>
                     <FormattedMessage
-                      id="app.analysis.volume-ranking"
-                      defaultMessage="Volume Ranking"
+                      id="app.analysis.operator-ranking"
+                      defaultMessage="operator Ranking"
                     />
                   </h4>
                   <ul className={styles.rankingList}>
@@ -184,7 +136,9 @@ const SalesCard = memo(
                         <span className={styles.rankingItemTitle} title={item.title}>
                           {item.title}
                         </span>
-                        <span>{numeral(item.total).format('0,0')}</span>
+                        <span className={styles.rankingItemValue}>
+                          {numeral(item.total).format('0,0')}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -192,54 +146,7 @@ const SalesCard = memo(
               </Col>
             </Row>
           </TabPane>
-          <TabPane
-            tab={<FormattedMessage id="app.analysis.receivable" defaultMessage="Receivable" />}
-            key="receivable"
-          >
-            <Row>
-              <Col xl={23} lg={12} md={12} sm={24} xs={24}>
-                <div className={styles.salesBar}>
-                  <Bar
-                    height={292}
-                    title={
-                      <FormattedMessage
-                        id="app.analysis.receivable-trend"
-                        defaultMessage="Receivable Trend"
-                      />
-                    }
-                    data={salesData}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane
-            tab={<FormattedMessage id="app.analysis.payable" defaultMessage="Payable" />}
-            key="payable"
-          >
-            <Row>
-              <Col xl={23} lg={12} md={12} sm={24} xs={24}>
-                <div className={styles.salesBar}>
-                  <Bar
-                    height={292}
-                    title={
-                      <FormattedMessage
-                        id="app.analysis.payable-trend"
-                        defaultMessage="Payable Trend"
-                      />
-                    }
-                    data={salesData}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
         </Tabs>
-        <Card>
-          <DescriptionList size="large" title="详细数据" style={{ marginBottom: 32 }}>
-            <Table columns={columns} dataSource={dataCS} style={{ padding: 10 }}/>
-          </DescriptionList>
-        </Card>
       </div>
     </Card>
   )

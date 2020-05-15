@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Card, Tabs, Row, Col } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import styles from './Home.less';
+import styles from './style.less';
 import { TimelineChart, Pie } from '@/components/Charts';
 import NumberInfo from '@/components/NumberInfo';
 

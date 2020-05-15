@@ -3,15 +3,11 @@ import request from '@/utils/request';
 import { OPERATOR_URL, platform_URL } from '../utils/Constants';
 import ajax from './ajax';
 
-//查询运营商
-export async function queryOperator(id) {
-  console.log('api', id);
-  return request(`${OPERATOR_URL}/manager/queryoperator?_id=${id}`);
-}
+
 //查询平台商
 export async function queryStaff(id) {
   console.log('api', id);
-  return request(`${OPERATOR_URL}/manager/queryoperator?_id=${id}`);
+  return request(`${platform_URL}/platform/querystaff?_id=${id}`);
 }
 
 export async function updateOperator(params) {
@@ -169,6 +165,40 @@ export async function verifyCategory(params) {
     body: params,
   });
 }
+
+
+//查看运营商列表
+export async function queryOperator(params) {
+  return request(`${platform_URL}/platform/queryoperator?${stringify(params)}`);
+}
+
+//查看工单列表
+export async function queryWorkorder(params) {
+  console.log('api', params);
+  return request(`${OPERATOR_URL}/manager/queryworkorder?${stringify(params)}`);
+}
+
+//查看单个分区
+export async function queryPartition(params) {
+  console.log('api', params);
+  return request(`${OPERATOR_URL}/manager/querypartition?_id=${params.id}`);
+}
+
+//分单-专才列表 传入工单id
+export async function queryAssign(params) {
+  console.log('api', params);
+  return request(`${OPERATOR_URL}/manager/assign_get?_id=${params.id}`);
+}
+
+//派单
+export async function assignPost(params) {
+  console.log('api', params);
+  return request(`${OPERATOR_URL}/manager/assignpost?${stringify(params)}`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');

@@ -151,6 +151,62 @@ export default [
         ],
       },
       {
+        path: '/order',
+        name: 'order',
+        icon: 'profile',
+        component: './Order/order',
+        hideChildrenInMenu: true,
+        routes: [
+          {
+            path: '/order',
+            redirect: '/order/info',
+          },
+          {
+            path: '/order/info',
+            name: 'info',
+            component: './Order/analysis',
+          },
+          {
+            path: '/order/list',
+            name: 'list',
+            component: './Order/order-list',
+          },
+          {
+            path: '/order/view-order/:_id',
+            name: 'view-order',
+            component: './Order/details/view',
+          },
+        ],
+      },
+      {
+        path: '/operator',
+        name: 'operator',
+        icon: 'profile',
+        component: './Operator/operator',
+        hideChildrenInMenu: true,
+        routes: [
+          {
+            path: '/operator',
+            redirect: '/operator/info',
+          },
+          {
+            path: '/operator/info',
+            name: 'info',
+            component: './Operator/analysis',
+          },
+          {
+            path: '/operator/list',
+            name: 'list',
+            component: './Operator/operator-list',
+          },
+          {
+            path: '/operator/view-operator/:_id',
+            name: 'view-operator',
+            component: './Operator/details/view',
+          },
+        ],
+      },
+      {
         path: '/messages',
         name: 'messages',
         icon: 'profile',
@@ -168,6 +224,7 @@ export default [
           },
         ],
       },
+
       //Label
       // {
       //   path: '/label',

@@ -17,27 +17,28 @@ export default {
         payload: response,
       });
       console.log('response',response);
+      return response
     },
-    *upOperator({ payload }, { call, put }) {
-      console.log('payload1',payload);
-      const response = yield call(updateOperator, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      console.log('response1',response);
-      return response;
-    },
-    *uplegalPersonPhoto({ payload }, { call, put }) {
-      console.log('saveIMG',payload);
-      const response = yield call(uplegalPersonPhoto, payload);
-      yield put({
-        type: 'saveIMG',
-        payload: response,
-      });
-      console.log('IMGresponse1',response);
-      return response;
-    },
+    // *upOperator({ payload }, { call, put }) {
+    //   console.log('payload1',payload);
+    //   const response = yield call(updateOperator, payload);
+    //   yield put({
+    //     type: 'save',
+    //     payload: response,
+    //   });
+    //   console.log('response1',response);
+    //   return response;
+    // },
+    // *uplegalPersonPhoto({ payload }, { call, put }) {
+    //   console.log('saveIMG',payload);
+    //   const response = yield call(uplegalPersonPhoto, payload);
+    //   yield put({
+    //     type: 'saveIMG',
+    //     payload: response,
+    //   });
+    //   console.log('IMGresponse1',response);
+    //   return response;
+    // },
   },
 
   

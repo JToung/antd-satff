@@ -1,23 +1,31 @@
 import React, { Component, Suspense } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Icon, Menu, Dropdown, message } from 'antd';
+import { Row, Col, Icon, Menu, Dropdown } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { getTimeDistance } from '@/utils/utils';
-import styles from './Home.less';
+import styles from './style.less';
 import PageLoading from '@/components/PageLoading';
 
 const IntroduceRow = React.lazy(() => import('./IntroduceRow'));
 const SalesCard = React.lazy(() => import('./SalesCard'));
-const CashFlowCard = React.lazy(() => import('./CashFlowCard'));
+const ListCard = React.lazy(() => import('./ListCard'));
 const TopSearch = React.lazy(() => import('./TopSearch'));
 const ProportionSales = React.lazy(() => import('./ProportionSales'));
 const OfflineData = React.lazy(() => import('./OfflineData'));
+const topColResponsiveProps = {
+  xs: 24,
+  sm: 12,
+  md: 12,
+  lg: 12,
+  xl: 12,
+  style: { marginBottom: 24 },
+};
 
 @connect(({ chart, loading }) => ({
   chart,
   loading: loading.effects['chart/fetch'],
 }))
-class OperatorHome extends Component {
+class AnalysisItem extends Component {
   state = {
     salesType: 'all',
     currentTabKey: '',
@@ -25,24 +33,6 @@ class OperatorHome extends Component {
   };
 
   componentDidMount() {
-    if (JSON.parse(localStorage.getItem('user')) === null) {
-      message.error('未登录！！请登录！');
-      this.props.history.push('/');
-    }
-    if (JSON.parse(localStorage.getItem('user')) != null) {
-      if (JSON.parse(localStorage.getItem('user')) === 'guest') {
-        message.error('未登录！！请登录！');
-        this.props.history.push('/');
-        console.log(JSON.parse(localStorage.getItem('user')));
-      }
-      if (JSON.parse(localStorage.getItem('user')).status === 'false') {
-        message.error('未登录！！请登录！');
-        this.props.history.push('/');
-        console.log(JSON.parse(localStorage.getItem('user')));
-      }
-    }
-    console.log('user', JSON.parse(localStorage.getItem('user')));
-    console.log(localStorage.getItem('userId'));
     const { dispatch } = this.props;
     this.reqRef = requestAnimationFrame(() => {
       dispatch({
@@ -106,7 +96,7 @@ class OperatorHome extends Component {
 
   render() {
     const { rangePickerValue, salesType, currentTabKey } = this.state;
-    const { chart, loading } = this.props;
+    const { match, chart, loading } = this.props;
     const {
       visitData,
       visitData2,
@@ -158,7 +148,7 @@ class OperatorHome extends Component {
         </Suspense>
         <div>
           <Suspense fallback={null}>
-            <CashFlowCard />
+            <ListCard />
           </Suspense>
         </div>
       </GridContent>
@@ -166,4 +156,4 @@ class OperatorHome extends Component {
   }
 }
 
-export default OperatorHome;
+export default AnalysisItem;

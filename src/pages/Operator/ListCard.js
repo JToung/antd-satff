@@ -1,16 +1,14 @@
 import React, { memo } from 'react';
 import { Table, Row, Col, Card, Tabs, DatePicker } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
-import styles from './Home.less';
+import styles from './style.less';
 
-const CashFlowCard = memo(
+
+const ListCardItem = memo(
     ({ rangePickerValue, salesData, isActive, handleRangePickerChange, loading, selectDate }) => (
-        <Card title="应收应付管理" extra={<a href="#">More</a>} style={{ marginTop: 16 }}>
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
+        <Card title="运营商列表" extra={<a href="/operator/list">More</a>} style={{ marginTop: 16 }}>
         </Card>
     )
 );
 
-export default CashFlowCard;
+export default ListCardItem;
