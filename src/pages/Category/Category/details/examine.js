@@ -91,7 +91,8 @@ class View extends PureComponent {
         ...values,
         auditTime: new Date().getTime(),
         auditStatus: '1',
-        id: this.props.match.params._id,
+        result:'1',
+        _id: this.props.match.params._id,
         auditorID: localStorage.getItem('userId'),
       };
 
@@ -129,7 +130,8 @@ class View extends PureComponent {
         ...values,
         auditTime: new Date().getTime(),
         auditStatus: '2',
-        id: this.props.match.params._id,
+        result:'2',
+        _id: this.props.match.params._id,
         object:"c",
         auditorID: localStorage.getItem('userId'),
       };

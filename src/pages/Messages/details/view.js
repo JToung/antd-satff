@@ -76,18 +76,44 @@ class View extends PureComponent {
       return <Badge status="success" text="通过" />;
     } else if (val == '2') {
       return <Badge status="error" text="未通过" />;
+    }else {
+      return (
+        <div>
+          <Badge status="warning" text="未处理" />
+        </div>
+      );
+    }
+  };
+
+  //获取动作标识 处理动作标识 t:提交审核，q:确认审核，p:派单，j:接单
+  getAction = val => {
+    console.log('action', val.action);
+    switch (val.action) {
+      case 't':
+        return <font>提交审核</font>;
+        break;
+      case 'q':
+        return <font>确认审核</font>;
+        break;
+      case 'p':
+        return <font>派单</font>;
+        break;
+      case 'j':
+        return <font>接单</font>;
+        break;
     }
   };
 
   //具体信息按分类跳转
   getLable = () => {
     const { messageData } = this.state;
-    switch (messageData.verifiedData.object) {
+    switch (messageData.detailObject) {
       case 'c':
+        console.log('messageData.detailObjectId',messageData.detailObjectId)
         return (
           <a
             onClick={() => {
-              this.props.history.push(`/category/view-categroy/${messageData.verifiedData.id}`);
+              this.props.history.push(`/category/examine-categroy/${messageData.verifiedData._id}`);
             }}
           >
             查看
@@ -109,7 +135,7 @@ class View extends PureComponent {
         return (
           <a
             onClick={() => {
-              this.props.history.push(`/item/view-item/${messageData.verifiedData.id}`);
+              this.props.history.push(`/item/view-item/${messageData.detailObjectId}`);
             }}
           >
             查看
@@ -121,12 +147,18 @@ class View extends PureComponent {
 
   getReason = () => {
     const { messageData } = this.state;
-    switch (messageData.verifiedData.object) {
+    console.log('messageData.detailObject',messageData.detailObject)
+    switch (messageData.detailObject) {
       case 'c':
-        return messageData.verifiedData.categoryReason;
+        if(messageData.object == 'o'){
+          return messageData.verifiedData.changedData.categoryReason;
+        }else if(messageData.object == 'p'){
+          return messageData.verifiedData.reason;
+        }
         break;
       case 'o':
-        return " ";
+        console.log('messageData111',messageData.verifiedData.changedData)
+        return messageData.verifiedData.changedData.categoryReason;
         break;
       case 'I':
         return " ";
@@ -147,18 +179,18 @@ class View extends PureComponent {
           <Card bordered={false}>
             <Descriptions title="消息详细信息" bordered loading={loading} layout="vertical">
               <Descriptions.Item label="消息ID">{messageData._id}</Descriptions.Item>
-              <Descriptions.Item label="审核人名">{messageData.auditorName}</Descriptions.Item>
+              <Descriptions.Item label="发送消息人名">{messageData.auditorName}</Descriptions.Item>
               <Descriptions.Item label="消息发送时间">
                 {moment(messageData.timestamp).format('YYYY-MM-DD HH:mm:ss')}
               </Descriptions.Item>
-              <Descriptions.Item label="审核申请" span={3}>
-                {this.getReason()}
-              </Descriptions.Item>
-              <Descriptions.Item label="审核结果" span={3}>
+              <Descriptions.Item label="处理结果">
                 {this.getResult(messageData.result)}
               </Descriptions.Item>
-              <Descriptions.Item label="审核返回信息" span={3}>
-                {messageData.reason}
+              <Descriptions.Item label="处理动作" span={2}>
+                {this.getAction(messageData)}
+              </Descriptions.Item>
+              <Descriptions.Item label="消息内容" span={3}>
+              {this.getReason()}
               </Descriptions.Item>
               <Descriptions.Item label="具体信息" span={3}>
                 {this.getLable()}

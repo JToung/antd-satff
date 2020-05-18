@@ -46,7 +46,7 @@ class MessageTabs extends PureComponent {
 
     const { dispatch } = this.props;
     const params0 = {
-      operator: localStorage.getItem('userId'),
+      pt: localStorage.getItem('userId'),
       read: '0',
     };
     dispatch({
@@ -66,7 +66,7 @@ class MessageTabs extends PureComponent {
     });
 
     const params1 = {
-      operator: localStorage.getItem('userId'),
+      pt: localStorage.getItem('userId'),
       read: '1',
     };
     dispatch({
@@ -91,17 +91,93 @@ class MessageTabs extends PureComponent {
     if (val == '1') {
       return (
         <div>
-          审核结果：
+          结果：
           <Badge status="success" text="通过" />
         </div>
       );
     } else if (val == '2') {
       return (
         <div>
-          审核结果：
+          结果：
           <Badge status="error" text="未通过" />
         </div>
       );
+    } else {
+      return (
+        <div>
+          结果：
+          <Badge status="warning" text="未处理" />
+        </div>
+      );
+    }
+  };
+
+  //获取发送标识
+  getObject = val => {
+    console.log('val.object', val.object);
+    switch (val.object) {
+      case 'o':
+        return <font>运营商</font>;
+        break;
+      case 'p':
+        return <font>平台管理员</font>;
+        break;
+      case 'z':
+        return <font>专才</font>;
+        break;
+      case 'y':
+        return <font>用户</font>;
+        break;
+    }
+  };
+
+  //获取动作标识 处理动作标识 t:提交审核，q:确认审核，p:派单，j:接单
+  getAction = val => {
+    console.log('action', val.action);
+    switch (val.action) {
+      case 't':
+        return <font>提交审核</font>;
+        break;
+      case 'q':
+        return <font>确认审核</font>;
+        break;
+      case 'p':
+        return <font>派单</font>;
+        break;
+      case 'j':
+        return <font>接单</font>;
+        break;
+    }
+  };
+
+  // 获取具体处理对象标识 c:品类	t:任务  o:运营商	z:专才 I:单品	log:工作日志  p:分区	g:工单
+  getDetailObject = val => {
+    console.log('detailObject', val.detailObject);
+    switch (val.detailObject) {
+      case 'c':
+        return <font>品类</font>;
+        break;
+      case 't':
+        return <font>任务</font>;
+        break;
+      case 'o':
+        return <font>运营商</font>;
+        break;
+      case 'z':
+        return <font>专才</font>;
+        break;
+      case 'I':
+        return <font>单品</font>;
+        break;
+      case 'log':
+        return <font>工作日志</font>;
+        break;
+      case 'p':
+        return <font>分区</font>;
+        break;
+      case 'g':
+        return <font>工单</font>;
+        break;
     }
   };
 
@@ -110,56 +186,21 @@ class MessageTabs extends PureComponent {
     if (item._id == null) {
       return;
     } else {
-      switch (item.verifiedData.object) {
-        case 'c':
-          console.log('item', item);
-          return (
-            <List.Item key={item._id}>
-              <div>
-                品类 {item.verifiedData.categoryName} 已于{' '}
-                {moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss')} 被平台管理员{' '}
-                {item.auditorName} 审核。
-                {this.getResult(item.result)}
-                <div>
-                  <Link to={`/messages/view/${item._id}`}>查看详情</Link>
-                </div>
-              </div>
-            </List.Item>
-          );
-          break;
-        case 'o':
-          console.log('item', item);
-          return (
-            <List.Item key={item._id}>
-              <div>
-                运营商信息 {item.verifiedData.categoryName} 已于{' '}
-                {moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss')} 被平台管理员{' '}
-                {item.auditorName} 审核。
-                {this.getResult(item.result)}
-                <div>
-                  <Link to={`/messages/view/${item._id}`}>查看详情</Link>
-                </div>
-              </div>
-            </List.Item>
-          );
-          break;
-        case 'I':
-          console.log('item', item);
-          return (
-            <List.Item key={item._id}>
-              <div>
-                单品 {item.verifiedData.categoryName} 已于{' '}
-                {moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss')} 被平台管理员{' '}
-                {item.auditorName} 审核。
-                {this.getResult(item.result)}
-                <div>
-                  <Link to={`/messages/view/${item._id}`}>查看详情</Link>
-                </div>
-              </div>
-            </List.Item>
-          );
-          break;
-      }
+      console.log('item', item);
+      return (
+        <List.Item key={item._id}>
+          <div>
+            {this.getObject(item)} {item.auditorName}于{' '}
+            {moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss')} 对 {this.getDetailObject(item)}
+            {item.detailObjectId}
+            执行{this.getAction(item)} 操作
+            {this.getResult(item.result)}
+            <div>
+              <Link to={`/messages/view/${item._id}`}>查看详情</Link>
+            </div>
+          </div>
+        </List.Item>
+      );
     }
   };
 

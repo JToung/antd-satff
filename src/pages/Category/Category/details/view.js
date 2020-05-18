@@ -92,7 +92,7 @@ class View extends PureComponent {
   render() {
     const { loading } = this.props;
     const { adjust } = this.state;
-    // console.log('operator.date',operator);
+    console.log('operator.date',adjust);
     if (adjust._id == null) {
       return (
         // 加头部
@@ -121,7 +121,7 @@ class View extends PureComponent {
         <PageHeaderWrapper title={<FormattedMessage id="app.categoty.basic.title" />}>
           <Card bordered={false}>
             <Descriptions title="服务品类包信息" bordered loading={loading} layout="vertical">
-              <Descriptions.Item label="品类包ID">{adjust._id}</Descriptions.Item>
+              <Descriptions.Item label="审核表ID">{adjust._id}</Descriptions.Item>
               <Descriptions.Item label="品类包名">
                 {adjust.changedData.categoryName}
               </Descriptions.Item>

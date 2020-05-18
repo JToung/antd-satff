@@ -7,7 +7,7 @@ import ajax from './ajax';
 export async function queryNews(params) {
   console.log('api', params);
   return request(
-    `${OPERATOR_URL}/manager/getnews?verifiedData.categoryOperator=${params.operator}&read=${
+    `${OPERATOR_URL}/manager/getnews?receiveId=${params.pt}&read=${
       params.read
     }`
   );
@@ -184,7 +184,7 @@ export async function queryAdjust(params) {
 //审核品类
 //params.id = 中断要求id
 export async function verifyCategory(params) {
-  return request(`${platform_URL}/platform/verifycategory?_id=${params.id}`, {
+  return request(`${platform_URL}/platform/verifycategory?_id=${params._id}`, {
     method: 'POST',
     body: params,
   });

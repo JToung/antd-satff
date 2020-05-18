@@ -19,7 +19,6 @@ class Center extends PureComponent {
     previewVisible: false,
   };
 
-
   componentDidMount() {
     const { dispatch, match } = this.props;
     const { params } = match;
@@ -49,59 +48,66 @@ class Center extends PureComponent {
       payload: params.id || localStorage.getItem('userId'),
     });
 
-    // console.log('this.props.data',this.props.data);
+    console.log('this.props.data', localStorage.getItem('userId'));
   }
-
-
 
   render() {
     const { previewVisible, previewImage } = this.state;
     const { staff = {}, loading } = this.props;
-    console.log('staff',staff)
+    console.log('staff', staff);
+    console.log('this.props.data', localStorage.getItem('userId'));
     // console.log('operator.date',operator);
-    return (
-      // 加头部
-      <Card bordered={false}>
-        <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
-          <Descriptions.Item label="平台管理人员ID">{staff.data.result._id}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员名">{staff.data.result.name}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员证件照">
-            {/* <img
-              alt="example"
-              style={{ width: 70, height: 70 }}
-              src={OPERATOR_URL + staff.data.legalPersonPhoto}
-            /> */}
-          </Descriptions.Item>
-          <Descriptions.Item label="注册时间">
-            {moment(staff.data.result.joinTime)
-                  .subtract(8, 'hours')
-                  .format('YYYY-MM-DD HH:mm:ss')}
-          </Descriptions.Item>
-          <Descriptions.Item label="平台管理人员身份证号">
-            {staff.data.result.legalPersonIdNo}
-          </Descriptions.Item>
-          <Descriptions.Item label="平台管理人员联系方式">
-            {staff.data.result.phone}
-          </Descriptions.Item>
-          <Descriptions.Item label="平台管理人员邮箱" span={3}>{staff.data.result.email}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员地址" span={3}>{staff.data.result.legalPersonAdress}</Descriptions.Item>
-          <Descriptions.Item label="平台管理人员详细信息" span={3}>
-            {staff.data.result.introduction}
-          </Descriptions.Item>
-        </Descriptions>
-        <Card>
-          <Button
-            type="primary"
-            onClick={() => {
-              this.props.history.push('/staff/center/update');
-            }}
-            className={styles.ButtonCenter}
-          >
-            修改基础信息
-          </Button>
+    if (staff.data.result == null) {
+      return  <Card bordered={false} />;
+    } else {
+      return(
+        // 加头部
+        <Card bordered={false}>
+          <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
+            <Descriptions.Item label="平台管理人员ID">{staff.data.result._id}</Descriptions.Item>
+            <Descriptions.Item label="平台管理人员名">{staff.data.result.name}</Descriptions.Item>
+            <Descriptions.Item label="平台管理人员证件照">
+              {/* <img
+                alt="example"
+                style={{ width: 70, height: 70 }}
+                src={OPERATOR_URL + staff.data.legalPersonPhoto}
+              /> */}
+            </Descriptions.Item>
+            <Descriptions.Item label="注册时间">
+              {moment(staff.data.result.joinTime)
+                .subtract(8, 'hours')
+                .format('YYYY-MM-DD HH:mm:ss')}
+            </Descriptions.Item>
+            <Descriptions.Item label="平台管理人员身份证号">
+              {staff.data.result.legalPersonIdNo}
+            </Descriptions.Item>
+            <Descriptions.Item label="平台管理人员联系方式">
+              {staff.data.result.phone}
+            </Descriptions.Item>
+            <Descriptions.Item label="平台管理人员邮箱" span={3}>
+              {staff.data.result.email}
+            </Descriptions.Item>
+            <Descriptions.Item label="平台管理人员地址" span={3}>
+              {staff.data.result.legalPersonAdress}
+            </Descriptions.Item>
+            <Descriptions.Item label="平台管理人员详细信息" span={3}>
+              {staff.data.result.introduction}
+            </Descriptions.Item>
+          </Descriptions>
+          <Card>
+            <Button
+              type="primary"
+              onClick={() => {
+                this.props.history.push('/staff/center/update');
+              }}
+              className={styles.ButtonCenter}
+            >
+              修改基础信息
+            </Button>
+          </Card>
         </Card>
-      </Card>
-    );
+      );
+    }
   }
 }
 

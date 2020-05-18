@@ -24,6 +24,7 @@ export default {
   'menu.messages': '消息管理',
   'menu.messages.info': '服务品类数据分析',
   'menu.messages.list': '消息列表列表',
+  'menu.messages.view': '消息详情',
   'menu.category.label': '服务品类标识管理',
   'menu.category.label.info': '服务品类标识列表',
   'menu.category.label.view-label': '服务品类标识信息',
