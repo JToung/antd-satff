@@ -21,7 +21,7 @@ import {
   Divider,
   Steps,
   Radio,
-  Table,
+  Table
 } from 'antd';
 // import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -39,12 +39,12 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 const statusMap = ['error', 'success'];
-const status = ['未运行', '正在运行'];
+const status = ['未上架', '已上架'];
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ operator, loading }) => ({
-  operator,
-  loading: loading.effects['operator'],
+@connect(({ category, loading }) => ({
+  category,
+  loading: loading.effects['category/fetchCategory'],
   //model
 }))
 @Form.create()
@@ -56,61 +56,60 @@ class TableList extends PureComponent {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
-    operator: [],
   };
 
   columns = [
     {
-      title: '运营商ID',
+      title: '品类ID',
       dataIndex: '_id',
       key: '_id',
     },
     {
-      title: '运营商名称',
-      dataIndex: 'operatorName',
-      key: 'operatorName',
+      title: '品类名称',
+      dataIndex: 'categoryName',
+      key: 'categoryName',
+      width: 150,
     },
     {
-      title: '运营商加入时间',
-      dataIndex: 'operatorAddTime',
-      key: 'operatorAddTime',
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      title: '品类简介',
+      dataIndex: 'categoryIntrod',
+      key: 'categoryIntrod',
+      width: 250,
     },
     {
-      title: '运营商法人',
-      dataIndex: 'legalPerson',
-      key: 'legalPerson',
-    },
-    {
-      title: '运营商状态',
-      dataIndex: 'operatorState',
-      key: 'operatorState',
+      title: '上架状态',
+      dataIndex: 'categoryState',
+      key: 'categoryState',
+      width: 100,
       render(val) {
         return <Badge status={statusMap[val]} text={status[val]} />;
       },
     },
     {
+      title: '品类产生时间',
+      dataIndex: 'categoryAddTime',
+      key: 'categoryAddTime',
+      render: val => (
+        <span>
+          {moment(val)
+            .subtract(8, 'hours')
+            .format('YYYY-MM-DD HH:mm:ss')}
+        </span>
+      ),
+    },
+    {
       title: '操作',
+      width: 100,
       render: val => (
         <Fragment>
-          {console.log('val', val)}
           <Divider type="vertical" />
-          <Link to={`/operator/center/view-operator/${val._id}`}>查看</Link>
-          <Divider type="vertical" />
-          {this.initialValue(val)}
+          <Link to={`/category/v/view-categroy/${val._id}`}>查看</Link>
           <Divider type="vertical" />
         </Fragment>
       ),
     },
   ];
 
-  initialValue(val) {
-    if (val.state == '2') {
-      return <Link to={`/workorder/assign-workorder/${val._id}`}>审核</Link>;
-    } else {
-      return <Link disabled>已审核</Link>;
-    }
-  }
 
   componentDidMount() {
     if (JSON.parse(localStorage.getItem('user')) === null) {
@@ -130,14 +129,15 @@ class TableList extends PureComponent {
       }
     }
     const { dispatch } = this.props;
+    // const params = {
+    //   categoryOperator: localStorage.getItem('userId'),
+    // };
     dispatch({
-      type: 'operator/fetchOperator',
-    }).then(res => {
-      console.log(res)
-      this.setState({ operator: res.foundData });
+      type: 'category/fetchCategory',
+      // payload: params,
     });
-    console.log('operator:', this.state.operator);
   }
+
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -145,10 +145,12 @@ class TableList extends PureComponent {
     this.setState({
       formValues: {},
     });
+    // const params = {
+    //   categoryOperator: localStorage.getItem('userId'),
+    // };
     dispatch({
-      type: 'operator/fetchOperator',
-    }).then(res => {
-      this.setState({ operator: res.foundData });
+      type: 'category/fetchCategory',
+      // payload: params,
     });
   };
 
@@ -189,37 +191,37 @@ class TableList extends PureComponent {
       // });
       const payload = {
         ...values,
+        categoryOperator: localStorage.getItem('userId'),
       };
-      console.log('payload', payload);
       dispatch({
-        type: 'operator/fetchOperator',
+        type: 'category/fetchCategory',
         payload: payload,
-      }).then(res => {
-        this.setState({ operator: res.foundData });
       });
     });
   };
 
+
+
   renderSimpleForm() {
     const {
       form: { getFieldDecorator },
-      item = {},
+      category = {},
       loading,
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="运营商名">
-              {getFieldDecorator('operatorName')(<Input placeholder="请输入" />)}
+            <FormItem label="品类包名">
+              {getFieldDecorator('categoryName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="运营商状态">
-              {getFieldDecorator('operatorState')(
-                <Select placeholder="请选择">
-                  <Option value="0">未运行</Option>
-                  <Option value="1">正在运行</Option>
+            <FormItem label="上架状态">
+              {getFieldDecorator('categoryState')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Option value="0">未上架</Option>
+                  <Option value="1">已上架</Option>
                 </Select>
               )}
             </FormItem>
@@ -239,19 +241,17 @@ class TableList extends PureComponent {
     );
   }
 
-  queryDate(item) {
-    if (item.data != null) {
-      this.setState();
-      return item.data.findResult;
+  queryDate(category) {
+    if (category.data != null) {
+      return category.data.res;
     } else {
-      return item;
+      return category;
     }
   }
 
   render() {
-    const { loading } = this.props;
-    const { operator } = this.state;
-    console.log('Workorder', operator);
+    const { category = {}, loading } = this.props;
+    console.log('categoryListrender', category);
     console.log('loading', loading);
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
 
@@ -264,10 +264,11 @@ class TableList extends PureComponent {
               selectedRows={selectedRows}
               rowKey="_id"
               loading={loading}
-              dataSource={this.queryDate(operator)}
+              dataSource={this.queryDate(category)}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
             />
+            {console.log('categoryList', category.data.res)}
           </div>
         </Card>
       </div>

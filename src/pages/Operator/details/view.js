@@ -95,7 +95,7 @@ class Center extends PureComponent {
             </Descriptions.Item>
             <Descriptions.Item label="运营商凭证" />
             <Descriptions.Item label="运营商简介" span={3}>
-              {operator.operatorIntroduction}
+              {operator.introduction}
             </Descriptions.Item>
             <Descriptions.Item label="运营商介绍" span={3}>
               {operator.content}
@@ -115,15 +115,15 @@ class Center extends PureComponent {
             </Descriptions.Item>
             <Descriptions.Item label="法人邮箱">{operator.legalPersonEmail}</Descriptions.Item>
             <Descriptions.Item label="法人地址">{operator.legalPersonAdress}</Descriptions.Item>
-            {/* <Descriptions.Item label="审核状态" span={3}>
+            <Descriptions.Item label="审核状态" span={3}>
             {this.onExamineState(operator.operatorState)}
-          </Descriptions.Item> */}
+          </Descriptions.Item>
           </Descriptions>
           <Card>
             <Button
               type="primary"
               onClick={() => {
-                this.props.history.push('/operator/list');
+                this.props.history.push('/operator/center/list');
               }}
               className={styles.ButtonCenter}
             >

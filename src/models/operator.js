@@ -1,4 +1,4 @@
-import { queryOperator , updateOperator , uplegalPersonPhoto} from '@/services/api';
+import { queryOperator , queryAdjust, verifyOperator , uplegalPersonPhoto} from '@/services/api';
 
 export default {
   namespace: 'operator',
@@ -18,6 +18,27 @@ export default {
       });
       console.log('response',response);
       return response
+    },
+    //获取审核列表
+    *fetchAdjust({ payload }, { call, put }) {
+      console.log('payload1', payload);
+      const response = yield call(queryAdjust, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryAdjust1', response);
+      return response;
+    },
+    *verifyOperator({ payload }, { call, put }) {
+      console.log('verifyOperatorpayload1',payload);
+      const response = yield call(verifyOperator, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('verifyOperator',response);
+      return response;
     },
     // *upOperator({ payload }, { call, put }) {
     //   console.log('payload1',payload);

@@ -6,7 +6,7 @@ import styles from './style.less';
 
 const ListCardItem = memo(
     ({ rangePickerValue, salesData, isActive, handleRangePickerChange, loading, selectDate }) => (
-        <Card title="订单列表" extra={<a href="/order/list">More</a>} style={{ marginTop: 16 }}>
+        <Card title="订单列表" extra={<a href="/order/v/list">More</a>} style={{ marginTop: 16 }}>
         </Card>
     )
 );

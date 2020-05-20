@@ -113,7 +113,7 @@ class View extends PureComponent {
         return (
           <a
             onClick={() => {
-              this.props.history.push(`/category/examine-categroy/${messageData.verifiedData._id}`);
+              this.props.history.push(`/category/e/examine-categroy/${messageData.verifiedData._id}`);
             }}
           >
             查看

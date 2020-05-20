@@ -12,7 +12,7 @@ import {
   Modal,
   Button,
   Divider,
-  message
+  message,
 } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -91,7 +91,7 @@ class View extends PureComponent {
         ...values,
         auditTime: new Date().getTime(),
         auditStatus: '1',
-        result:'1',
+        result: '1',
         _id: this.props.match.params._id,
         auditorID: localStorage.getItem('userId'),
       };
@@ -111,7 +111,7 @@ class View extends PureComponent {
         payload,
       }).then(res => {
         console.log('res', res);
-        if (res.status != "0") {
+        if (res.status != '0') {
           message.success(res.information);
           this.props.history.push('/category/list');
         } else {
@@ -130,9 +130,9 @@ class View extends PureComponent {
         ...values,
         auditTime: new Date().getTime(),
         auditStatus: '2',
-        result:'2',
+        result: '2',
         _id: this.props.match.params._id,
-        object:"c",
+        object: 'c',
         auditorID: localStorage.getItem('userId'),
       };
 
@@ -151,7 +151,7 @@ class View extends PureComponent {
         payload,
       }).then(res => {
         console.log('res', res);
-        if (res.status != "0") {
+        if (res.status != '0') {
           message.success(res.information);
           this.props.history.push('/category/list');
         } else {
@@ -177,6 +177,89 @@ class View extends PureComponent {
     }
   }
 
+  getExamine = auditStatus => {
+    if (auditStatus == '0') {
+      return (
+        <Form layout="vertical">
+          <Card bordered={false}>
+            <Form.Item label="通过/不通过审核理由">
+              {getFieldDecorator('reason', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入理由',
+                  },
+                ],
+              })(<Input.TextArea style={{ minHeight: 32 }} placeholder="请输入理由" rows={4} />)}
+            </Form.Item>
+          </Card>
+          <Card bordered={false}>
+            <div>
+              <Row gutter={16}>
+                <Col lg={8} md={12} sm={24}>
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className={styles.ButtonCenter}
+                      onClick={() => {
+                        this.handleSubmit1();
+                      }}
+                    >
+                      通过审核
+                    </Button>
+                  </Form.Item>
+                </Col>
+                <Col lg={8} md={12} sm={24}>
+                  <Form.Item>
+                    <Button
+                      type="danger"
+                      htmlType="submit"
+                      className={styles.ButtonCenter}
+                      onClick={() => {
+                        this.handleSubmit0();
+                      }}
+                    >
+                      不通过审核
+                    </Button>
+                  </Form.Item>
+                </Col>
+                <Col xl={{ span: 6 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className={styles.ButtonCenter}
+                      onClick={() => {
+                        this.props.history.push('/category/list');
+                      }}
+                    >
+                      返回首页
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
+          </Card>
+        </Form>
+      );
+    } else {
+      return (
+        <Card bordered={false}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={styles.ButtonCenter}
+            onClick={() => {
+              this.props.history.push('/category/list');
+            }}
+          >
+            返回首页
+          </Button>
+        </Card>
+      );
+    }
+  };
   render() {
     const {
       loading,
@@ -191,6 +274,7 @@ class View extends PureComponent {
           <Card bordered={false}>
             <Descriptions title="服务品类包信息" bordered loading={loading} />
             <Card>
+              处理已删除，请返回
               <Button
                 type="primary"
                 onClick={() => {
@@ -280,73 +364,7 @@ class View extends PureComponent {
                 {adjust.changedData.categoryReason}
               </Descriptions.Item>
             </Descriptions>
-            <Form layout="vertical">
-              <Card bordered={false}>
-                <Form.Item label="通过/不通过审核理由">
-                  {getFieldDecorator('reason', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '请输入理由',
-                      },
-                    ],
-                  })(
-                    <Input.TextArea style={{ minHeight: 32 }} placeholder="请输入理由" rows={4} />
-                  )}
-                </Form.Item>
-              </Card>
-              <Card bordered={false}>
-                <div>
-                  <Row gutter={16}>
-                    <Col lg={8} md={12} sm={24}>
-                      <Form.Item>
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          className={styles.ButtonCenter}
-                          loading={loading}
-                          onClick={() => {
-                            this.handleSubmit1();
-                          }}
-                        >
-                          通过审核
-                        </Button>
-                      </Form.Item>
-                    </Col>
-                    <Col lg={8} md={12} sm={24}>
-                      <Form.Item>
-                        <Button
-                          type="danger"
-                          htmlType="submit"
-                          className={styles.ButtonCenter}
-                          loading={loading}
-                          onClick={() => {
-                            this.handleSubmit0();
-                          }}
-                        >
-                          不通过审核
-                        </Button>
-                      </Form.Item>
-                    </Col>
-                    <Col xl={{ span: 6 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-                      <Form.Item>
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          className={styles.ButtonCenter}
-                          onClick={() => {
-                            this.props.history.push('/category/list');
-                          }}
-                          loading={loading}
-                        >
-                          返回首页
-                        </Button>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </div>
-              </Card>
-            </Form>
+            {this.getExamine(adjust.auditStatus)}
           </Card>
         </PageHeaderWrapper>
       );

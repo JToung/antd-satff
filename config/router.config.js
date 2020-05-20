@@ -58,47 +58,55 @@ export default [
         path: '/category',
         name: 'category',
         icon: 'profile',
-        component: './Category/Category/category',
-        hideChildrenInMenu: true,
         routes: [
-          {
-            path: '/category',
-            redirect: '/category/info',
-          },
           {
             path: '/category/info',
             name: 'info',
             component: './Category/Category/analysis',
           },
           {
-            path: '/category/list',
-            name: 'list',
-            component: './Category/Category/category-list',
+            path: '/category/v',
+            name: 'v',
+            component: './Category/Category/category',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/category/v',
+                redirect: '/category/v/list',
+              },
+              {
+                path: '/category/v/list',
+                name: 'list',
+                component: './Category/Category-v/category-list',
+              },
+              {
+                path: '/category/v/view-categroy/:_id',
+                name: 'view-categroy',
+                component: './Category/Category-v/details/view',
+              },
+            ],
           },
           {
-            path: '/category/view-categroy/:_id',
-            name: 'view-categroy',
-            component: './Category/Category/details/view',
-          },
-          {
-            path: '/category/delete-categroy/:_id',
-            name: 'delete-categroy',
-            component: './Category/Category/details/delete',
-          },
-          {
-            path: '/category/examine-categroy/:_id',
-            name: 'examine-categroy',
-            component: './Category/Category/details/examine',
-          },
-          {
-            path: '/category/new-categroy',
-            name: 'new-categroy',
-            component: './Category/Category/details/new',
-          },
-          {
-            path: '/category/uporoff-categroy/:_id',
-            name: 'uporoff-categroy',
-            component: './Category/Category/details/uporoff',
+            path: '/category/e',
+            name: 'e',
+            component: './Category/Category/category',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/category/e',
+                redirect: '/category/e/list',
+              },
+              {
+                path: '/category/e/list',
+                name: 'list',
+                component: './Category/Category/category-list',
+              },
+              {
+                path: '/category/e/examine-categroy/:_id',
+                name: 'examine-categroy',
+                component: './Category/Category/details/examine',
+              },
+            ],
           },
         ],
       },
@@ -106,47 +114,53 @@ export default [
         path: '/item',
         name: 'item',
         icon: 'profile',
-        component: './Item/item',
-        hideChildrenInMenu: true,
         routes: [
-          {
-            path: '/item',
-            redirect: '/item/info',
-          },
           {
             path: '/item/info',
             name: 'info',
             component: './Item/analysis',
           },
           {
-            path: '/item/list',
-            name: 'list',
-            component: './Item/item-list',
-          },
-          {
-            path: '/item/view-item/:_id',
-            name: 'view-item',
-            component: './Item/details/view',
-          },
-          {
-            path: '/item/delete-item/:_id',
-            name: 'delete-item',
-            component: './Item/details/delete',
-          },
-          {
-            path: '/item/editor-item/:_id',
-            name: 'editor-item',
-            component: './Item/details/editor',
-          },
-          {
-            path: '/item/new-item',
-            name: 'new-item',
-            component: './Item/details/new',
-          },
-          {
-            path: '/item/uporoff-item/:_id',
-            name: 'uporoff-item',
-            component: './Item/details/uporoff',
+            path: '/item/e',
+            name: 'e',
+            component: './Item/item',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/item/e',
+                redirect: '/item/e/list',
+              },
+              {
+                path: '/item/e/list',
+                name: 'list',
+                component: './Item/item-list',
+              },
+              {
+                path: '/item/e/view-item/:_id',
+                name: 'view-item',
+                component: './Item/details/view',
+              },
+              {
+                path: '/item/e/delete-item/:_id',
+                name: 'delete-item',
+                component: './Item/details/delete',
+              },
+              {
+                path: '/item/e/editor-item/:_id',
+                name: 'editor-item',
+                component: './Item/details/editor',
+              },
+              {
+                path: '/item/e/new-item',
+                name: 'new-item',
+                component: './Item/details/new',
+              },
+              {
+                path: '/item/e/uporoff-item/:_id',
+                name: 'uporoff-item',
+                component: './Item/details/uporoff',
+              },
+            ],
           },
         ],
       },
@@ -154,55 +168,85 @@ export default [
         path: '/order',
         name: 'order',
         icon: 'profile',
-        component: './Order/order',
-        hideChildrenInMenu: true,
         routes: [
-          {
-            path: '/order',
-            redirect: '/order/info',
-          },
           {
             path: '/order/info',
             name: 'info',
             component: './Order/analysis',
           },
           {
-            path: '/order/list',
-            name: 'list',
-            component: './Order/order-list',
+            path: '/order/v',
+            name: 'v',
+            component: './Order/order',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/order/v',
+                redirect: '/order/v/list',
+              },
+              {
+                path: '/order/v/list',
+                name: 'list',
+                component: './Order/order-list',
+              },
+              {
+                path: '/order/v/view-order/:_id',
+                name: 'view-order',
+                component: './Order/details/view',
+              },
+            ],
           },
-          {
-            path: '/order/view-order/:_id',
-            name: 'view-order',
-            component: './Order/details/view',
-          },
+          
         ],
       },
       {
         path: '/operator',
         name: 'operator',
         icon: 'profile',
-        component: './Operator/operator',
-        hideChildrenInMenu: true,
         routes: [
-          {
-            path: '/operator',
-            redirect: '/operator/info',
-          },
           {
             path: '/operator/info',
             name: 'info',
             component: './Operator/analysis',
           },
           {
-            path: '/operator/list',
-            name: 'list',
-            component: './Operator/operator-list',
+            path: '/operator/center',
+            name: 'center',
+            component: './Operator/operator',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/operator/center',
+                redirect: '/operator/center/list',
+              },
+              {
+                path: '/operator/center/list',
+                name: 'list',
+                component: './Operator/operator-list',
+              },
+              {
+                path: '/operator/center/view-operator/:_id',
+                name: 'view-operator',
+                component: './Operator/details/view',
+              },
+            ],
           },
           {
-            path: '/operator/view-operator/:_id',
-            name: 'view-operator',
-            component: './Operator/details/view',
+            path: '/operator/examine',
+            name: 'examine',
+            component: './Operator/examine/operator-list',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/operator/examine',
+                redirect: '/operator/examine/list',
+              },
+              {
+                path: '/operator/examine/list',
+                name: 'list',
+                component: './Operator/examine/operator-list',
+              },
+            ],
           },
         ],
       },

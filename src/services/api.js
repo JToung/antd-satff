@@ -175,7 +175,11 @@ export async function upInterrupt(params) {
   });
 }
 
-//审核列表
+/**
+ * 审核列表
+ * @param {*} params 
+ * object c：品类，o:运营商，I:单品，i: 中断要求,p:分区,t:任务
+ */
 export async function queryAdjust(params) {
   console.log('api1', params);
   return request(`${platform_URL}/platform/queryadjust?${stringify(params)}`);
@@ -194,6 +198,15 @@ export async function verifyCategory(params) {
 //查看运营商列表
 export async function queryOperator(params) {
   return request(`${platform_URL}/platform/queryoperator?${stringify(params)}`);
+}
+
+//审核运营商
+//params.id = 中断要求id
+export async function verifyOperator(params) {
+  return request(`${platform_URL}/platform/verifyoperator?adjustId=${params.adjustId}`, {
+    method: 'POST',
+    body: params,
+  });
 }
 
 //查看工单

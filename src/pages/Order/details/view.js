@@ -244,7 +244,7 @@ class ViewItem extends PureComponent {
               <Button
                 type="primary"
                 onClick={() => {
-                  this.props.history.push('/order/list');
+                  this.props.history.push('/order/v/list');
                 }}
                 className={styles.ButtonCenter}
               >
@@ -264,7 +264,7 @@ class ViewItem extends PureComponent {
     console.log('order', order);
     if (order == null) {
       if (this.props.match.params._id == null) {
-        this.props.history.push('/order/list');
+        this.props.history.push('/order/v/list');
       } else {
         return <div>{this.re()}</div>;
       }

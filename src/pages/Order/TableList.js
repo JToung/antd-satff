@@ -90,7 +90,7 @@ class TableList extends PureComponent {
         <Fragment>
           {console.log('val', val)}
           <Divider type="vertical" />
-          <Link to={`/order/view-order/${val._id}`}>查看</Link>
+          <Link to={`/order/v/view-order/${val._id}`}>查看</Link>
           <Divider type="vertical" />
         </Fragment>
       ),

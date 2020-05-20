@@ -22,7 +22,7 @@ export default {
   'app.forms.basic.description':
     '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
   'app.staff.basic.title': '平台管理人员基础信息',
-  'app.operators.basic.title': '运营商管理',
+  'app.operator.basic.title': '运营商管理',
   'app.categoty.basic.title': '服务品类包管理',
   'app.item.basic.title': '服务单品包管理',
   'app.order.basic.title': '订单管理',
@@ -33,7 +33,7 @@ export default {
   'app.order.list.title': '订单列表',
   'app.order.assign.title': '订单派单',
   'app.servicer.list.title': '专才列表',
-  'app.operators.list.title': '运营商列表',
+  'app.operator.list.title': '运营商列表',
   'app.label.list.title': '服务品类标签列表',
   'app.messages.list.title': '消息列表',
   'app.messages.basic.title': '消息管理',

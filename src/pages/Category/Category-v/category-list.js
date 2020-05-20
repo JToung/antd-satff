@@ -6,12 +6,12 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TableList from'./TableList'
 
 @connect()
-class Label extends Component {
+class CategoryL extends Component {
 
   render() {
     return (
       <PageHeaderWrapper
-        title={<FormattedMessage id="app.label.list.title" />}
+        title={<FormattedMessage id="app.categoty.list.title" />}
       >
         <TableList/>
       </PageHeaderWrapper>
@@ -19,4 +19,4 @@ class Label extends Component {
   }
 }
 
-export default Label;
+export default CategoryL;

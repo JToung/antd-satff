@@ -104,7 +104,7 @@ class TableList extends PureComponent {
           {console.log('val', val)}
           {this.getCz(val)}
           <Divider type="vertical" />
-          <Link to={`/category/view-categroy/${val._id}`}>查看</Link>
+          <Link to={`/category/e/view-categroy/${val._id}`}>查看</Link>
           <Divider type="vertical" />
         </Fragment>
       ),
@@ -202,7 +202,7 @@ class TableList extends PureComponent {
         return (
           <span>
             <Divider type="vertical" />
-            <Link to={`/category/examine-categroy/${val._id}`}>审核</Link>
+            <Link to={`/category/e/examine-categroy/${val._id}`}>审核</Link>
           </span>
         );
         break;
