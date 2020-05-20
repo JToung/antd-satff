@@ -403,15 +403,6 @@ class TableList extends PureComponent {
         <Card bordered={false} loading={loading}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
-            {/* <div className={styles.tableListOperator}>
-              <Link to="/category/new-categroy">
-                <Button icon="plus" type="primary">
-                  {console.log(this.props.history)}
-                  新建
-                </Button>
-              </Link>
-
-            </div> */}
             <Table
               selectedRows={selectedRows}
               rowKey="_id"

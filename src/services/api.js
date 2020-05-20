@@ -209,6 +209,20 @@ export async function verifyOperator(params) {
   });
 }
 
+//查看运营商合约
+export async function queryContract(params) {
+  console.log('api', params);
+  return request(`${platform_URL}/platform/querycontract?${stringify(params)}`);
+}
+
+//添加运营商合约
+export async function addContract(params) {
+  return request(`${platform_URL}/platform/addcontract`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
 //查看工单
 export async function queryWorkorder(params) {
   console.log('api', params);

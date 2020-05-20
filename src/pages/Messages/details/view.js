@@ -76,7 +76,7 @@ class View extends PureComponent {
       return <Badge status="success" text="通过" />;
     } else if (val == '2') {
       return <Badge status="error" text="未通过" />;
-    }else {
+    } else {
       return (
         <div>
           <Badge status="warning" text="未处理" />
@@ -109,11 +109,13 @@ class View extends PureComponent {
     const { messageData } = this.state;
     switch (messageData.detailObject) {
       case 'c':
-        console.log('messageData.detailObjectId',messageData.detailObjectId)
+        console.log('messageData.detailObjectId', messageData.detailObjectId);
         return (
           <a
             onClick={() => {
-              this.props.history.push(`/category/e/examine-categroy/${messageData.verifiedData._id}`);
+              this.props.history.push(
+                `/category/e/examine-categroy/${messageData.verifiedData._id}`
+              );
             }}
           >
             查看
@@ -124,7 +126,9 @@ class View extends PureComponent {
         return (
           <a
             onClick={() => {
-              this.props.history.push(`/operator/center/info`);
+              this.props.history.push(
+                `/operator/examine/view-operator/${messageData.verifiedData._id}`
+              );
             }}
           >
             查看
@@ -142,27 +146,42 @@ class View extends PureComponent {
           </a>
         );
         break;
+      // case 'z':
+      //   return (
+      //     <a
+      //       onClick={() => {
+      //         this.props.history.push(`/item/view-item/${messageData.detailObjectId}`);
+      //       }}
+      //     >
+      //       查看
+      //     </a>
+      //   );
+      //   break;
     }
   };
 
+  //获取理由
   getReason = () => {
     const { messageData } = this.state;
-    console.log('messageData.detailObject',messageData.detailObject)
     switch (messageData.detailObject) {
       case 'c':
-        if(messageData.object == 'o'){
+        if (messageData.object == 'o') {
           return messageData.verifiedData.changedData.categoryReason;
-        }else if(messageData.object == 'p'){
+        } else if (messageData.object == 'p') {
           return messageData.verifiedData.reason;
         }
         break;
       case 'o':
-        console.log('messageData111',messageData.verifiedData.changedData)
+        console.log('messageData111', messageData.verifiedData.changedData);
         return messageData.verifiedData.changedData.categoryReason;
         break;
       case 'I':
-        return " ";
+        return ' ';
         break;
+      // case 'z':
+      //   console.log('messageData111', messageData.reason);
+      //   return messageData.reason;
+      //   break;
     }
   };
 
@@ -170,6 +189,8 @@ class View extends PureComponent {
     const { loading } = this.props;
     const { messageData } = this.state;
     // console.log('operator.date',operator);
+    console.log('messageData.detailObject', messageData.detailObject);
+    console.log('messageData111', messageData.reason);
     if (this.props.match.params._id == null) {
       this.props.history.push('/messages');
     } else if (messageData._id != null) {
@@ -190,7 +211,7 @@ class View extends PureComponent {
                 {this.getAction(messageData)}
               </Descriptions.Item>
               <Descriptions.Item label="消息内容" span={3}>
-              {this.getReason()}
+                {this.getReason()}
               </Descriptions.Item>
               <Descriptions.Item label="具体信息" span={3}>
                 {this.getLable()}
@@ -216,10 +237,11 @@ class View extends PureComponent {
         <PageHeaderWrapper title={'消息管理'}>
           <Card bordered={false}>
             <Card>
+              消息可能已被删除
               <Button
                 type="primary"
                 onClick={() => {
-                  this.props.history.push('/category/list');
+                  this.props.history.push('/messages');
                 }}
                 className={styles.ButtonCenter}
               >

@@ -106,6 +106,11 @@ export default [
                 name: 'examine-categroy',
                 component: './Category/Category/details/examine',
               },
+              {
+                path: '/category/e/view-categroy/:_id',
+                name: 'view-categroy',
+                component: './Category/Category/details/view',
+              },
             ],
           },
         ],
@@ -234,7 +239,7 @@ export default [
           {
             path: '/operator/examine',
             name: 'examine',
-            component: './Operator/examine/operator-list',
+            component: './Operator/examine/operator',
             hideChildrenInMenu: true,
             routes: [
               {
@@ -245,6 +250,11 @@ export default [
                 path: '/operator/examine/list',
                 name: 'list',
                 component: './Operator/examine/operator-list',
+              },
+              {
+                path: '/operator/examine/view-operator/:_id',
+                name: 'view-operator',
+                component: './Operator/examine/view',
               },
             ],
           },

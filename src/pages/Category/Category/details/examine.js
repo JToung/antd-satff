@@ -69,14 +69,26 @@ class View extends PureComponent {
           type: 'category/fetchAdjust',
           payload: params1,
         }).then(res => {
-          const adjust = res.findResult[0];
-          setTimeout(
-            () =>
-              this.setState({ adjust: adjust }, () => {
-                console.log('componentDidMountres111：' + this.state.adjust);
-              }),
-            0
-          );
+          if(res.status == '1'){
+            const adjust = res.findResult[0];
+            setTimeout(
+              () =>
+                this.setState({ adjust: adjust }, () => {
+                  console.log('componentDidMountres111：' + this.state.adjust);
+                }),
+              0
+            );
+          }else{
+            const adjust = {};
+            setTimeout(
+              () =>
+                this.setState({ adjust: adjust }, () => {
+                  console.log('componentDidMountres111：' + this.state.adjust);
+                }),
+              0
+            );
+          }
+          
         }),
       0
     );
@@ -113,7 +125,7 @@ class View extends PureComponent {
         console.log('res', res);
         if (res.status != '0') {
           message.success(res.information);
-          this.props.history.push('/category/list');
+          this.props.history.push('/category/e/list');
         } else {
           message.error(res.information);
         }
@@ -153,7 +165,7 @@ class View extends PureComponent {
         console.log('res', res);
         if (res.status != '0') {
           message.success(res.information);
-          this.props.history.push('/category/list');
+          this.props.history.push('/category/e/list');
         } else {
           message.error(res.information);
         }
@@ -178,6 +190,9 @@ class View extends PureComponent {
   }
 
   getExamine = auditStatus => {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
     if (auditStatus == '0') {
       return (
         <Form layout="vertical">
@@ -231,7 +246,7 @@ class View extends PureComponent {
                       htmlType="submit"
                       className={styles.ButtonCenter}
                       onClick={() => {
-                        this.props.history.push('/category/list');
+                        this.props.history.push('/category/e/list');
                       }}
                     >
                       返回首页
@@ -251,7 +266,7 @@ class View extends PureComponent {
             htmlType="submit"
             className={styles.ButtonCenter}
             onClick={() => {
-              this.props.history.push('/category/list');
+              this.props.history.push('/category/e/list');
             }}
           >
             返回首页
@@ -278,7 +293,7 @@ class View extends PureComponent {
               <Button
                 type="primary"
                 onClick={() => {
-                  this.props.history.push('/category/list');
+                  this.props.history.push('/category/e/list');
                 }}
                 className={styles.ButtonCenter}
               >

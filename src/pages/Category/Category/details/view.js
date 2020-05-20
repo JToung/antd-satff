@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Table, Tag, Descriptions, Badge, Card, Modal, Button, Divider } from 'antd';
+import { Table, Tag, Descriptions, Badge, Card, Modal, Button, Divider, Row, Col } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './style.less';
@@ -89,23 +89,68 @@ class View extends PureComponent {
     }
   }
 
+  getState = state => {
+    if (state == '0') {
+      return (
+        <div>
+          <Row gutter={16}>
+            <Col lg={12} md={12} sm={24}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.props.history.push('/category/e/list');
+                }}
+                className={styles.ButtonRight}
+              >
+                返回
+              </Button>
+            </Col>
+            <Col xl={{ span: 6 }} lg={{ span: 12 }} md={{ span: 12 }} sm={24}>
+              <Button
+                type="danger"
+                onClick={() => {
+                  this.props.history.push(
+                    `/category/e/examine-categroy/${this.props.match.params._id}`
+                  );
+                }}
+                className={styles.ButtonLeft}
+              >
+                审核
+              </Button>
+            </Col>
+          </Row>
+        </div>
+      );
+    } else {
+      return (
+        <Button
+          type="primary"
+          onClick={() => {
+            this.props.history.push('/category/e/list');
+          }}
+          className={styles.ButtonCenter}
+        >
+          返回
+        </Button>
+      );
+    }
+  };
+
   render() {
     const { loading } = this.props;
     const { adjust } = this.state;
-    console.log('operator.date',adjust);
+    console.log('operator.date', adjust);
     if (adjust._id == null) {
       return (
         // 加头部
         <PageHeaderWrapper title={<FormattedMessage id="app.categoty.basic.title" />}>
           <Card bordered={false}>
-            <Descriptions title="服务品类包信息" bordered loading={loading}>
-              
-            </Descriptions>
+            <Descriptions title="服务品类包信息" bordered loading={loading} />
             <Card>
               <Button
                 type="primary"
                 onClick={() => {
-                  this.props.history.push('/category/list');
+                  this.props.history.push('/category/e/list');
                 }}
                 className={styles.ButtonCenter}
               >
@@ -136,7 +181,12 @@ class View extends PureComponent {
               </Descriptions.Item>
             </Descriptions>
             <br />
-            <Descriptions title="品类规范（用于品类下级单品规范）" bordered loading={loading} layout="vertical">
+            <Descriptions
+              title="品类规范（用于品类下级单品规范）"
+              bordered
+              loading={loading}
+              layout="vertical"
+            >
               <Descriptions.Item label="规范必要说明" span={3}>
                 {adjust.changedData.categoryExplanation}
               </Descriptions.Item>
@@ -186,17 +236,7 @@ class View extends PureComponent {
                 {adjust.changedData.categoryReason}
               </Descriptions.Item>
             </Descriptions>
-            <Card>
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.props.history.push('/category/list');
-                }}
-                className={styles.ButtonCenter}
-              >
-                返回
-              </Button>
-            </Card>
+            <Card>{this.getState(adjust.auditStatus)}</Card>
           </Card>
         </PageHeaderWrapper>
       );

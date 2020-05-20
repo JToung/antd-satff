@@ -158,9 +158,6 @@ class TableList extends PureComponent {
       key: 'timestamp',
       render: val => (
         <span>
-          {/* {moment(val)
-            .subtract(8, 'hours')
-            .format('YYYY-MM-DD HH:mm:ss')} */}
           {moment(val).format('YYYY-MM-DD HH:mm:ss')}
         </span>
       ),
@@ -172,8 +169,7 @@ class TableList extends PureComponent {
         <Fragment>
           {console.log('val', val)}
           <Divider type="vertical" />
-          <Link onClick={() => this.showViewModal(val)}>查看</Link>
-          {this.getView()}
+          <Link to={`/operator/examine/view-operator/${val._id}`}>查看</Link>
           <Divider type="vertical" />
           {this.initialValue(val)}
           <ExamineForm
@@ -242,72 +238,6 @@ class TableList extends PureComponent {
     console.log('operatorE:', this.state.operatorE);
   }
 
-  /*
-  查看审核内容
-  */
-  getView = () => {
-    const { Contract } = this.state;
-    if (Contract._id != null) {
-      return (
-        <Modal
-          title="查看审核内容"
-          visible={this.state.viewVisible}
-          onOk={this.handleViewOk}
-          onCancel={this.handleViewCancel}
-          width={720}
-        >
-          <Descriptions bordered layout="vertical">
-            <Descriptions.Item label="运营商ID">{Contract._id}</Descriptions.Item>
-            <Descriptions.Item label="运营商名">{Contract.operatorName}</Descriptions.Item>
-            <Descriptions.Item label="系统分成">在合约表（运营商约束）中</Descriptions.Item>
-            <Descriptions.Item label="审核状态" span={3}>
-              {this.onExamineState(Contract.operatorState)}
-            </Descriptions.Item>
-            <Descriptions.Item label="运营商凭证" />
-            <Descriptions.Item label="入驻时间" span={2}>
-              {moment(Contract.operatorAddTime)
-                .subtract(8, 'hours')
-                .format('YYYY-MM-DD HH:mm:ss')}
-            </Descriptions.Item>
-            <Descriptions.Item label="运营商简介" span={3}>
-              {Contract.introduction}
-            </Descriptions.Item>
-            <Descriptions.Item label="运营商介绍" span={3}>
-              {Contract.content}
-            </Descriptions.Item>
-            <Descriptions.Item label="运行状态" span={3}>
-              {this.onOperatorState(Contract.operatorState)}
-            </Descriptions.Item>
-            <Descriptions.Item label="运营商法人">{Contract.legalPerson}</Descriptions.Item>
-            <Descriptions.Item label="法人身份信息">{Contract.legalPersonIdNo}</Descriptions.Item>
-            <Descriptions.Item label="法人联系方式">{Contract.legalPersonPhone}</Descriptions.Item>
-            <Descriptions.Item label="法人证件照">
-              <img
-                alt="example"
-                style={{ width: 70, height: 70 }}
-                src={OPERATOR_URL + Contract.legalPersonPhoto}
-              />
-            </Descriptions.Item>
-            <Descriptions.Item label="法人邮箱">{Contract.legalPersonEmail}</Descriptions.Item>
-            <Descriptions.Item label="法人地址">{Contract.legalPersonAdress}</Descriptions.Item>
-          </Descriptions>
-        </Modal>
-      );
-    } else {
-      return (
-        <Modal
-          title="查看审核内容"
-          visible={this.state.viewVisible}
-          onOk={this.handleViewOk}
-          onCancel={this.handleViewCancel}
-          width={720}
-        >
-          查询错误
-        </Modal>
-      );
-    }
-  };
-
   /**
    * 审核状态
    * @param {*} examineState
@@ -355,10 +285,6 @@ class TableList extends PureComponent {
     }
   }
 
-  /*
-  返回审核model
-  */
-
   //查看审核
   handleViewOk = e => {
     console.log(e);
@@ -381,6 +307,7 @@ class TableList extends PureComponent {
       viewVisible: false,
     });
   };
+
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;

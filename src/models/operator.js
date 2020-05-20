@@ -1,4 +1,4 @@
-import { queryOperator , queryAdjust, verifyOperator , uplegalPersonPhoto} from '@/services/api';
+import { queryOperator , queryAdjust, verifyOperator , queryContract, addContract} from '@/services/api';
 
 export default {
   namespace: 'operator',
@@ -38,6 +38,26 @@ export default {
         payload: response,
       });
       console.log('verifyOperator',response);
+      return response;
+    },
+    *queryContract({ payload }, { call, put }) {
+      console.log('payload1',payload);
+      const response = yield call(queryContract, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('response1',response);
+      return response;
+    },
+    *addContract({ payload }, { call, put }) {
+      console.log('addContractpayload1',payload);
+      const response = yield call(addContract, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('addContract',response);
       return response;
     },
     // *upOperator({ payload }, { call, put }) {
