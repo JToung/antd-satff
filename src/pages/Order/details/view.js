@@ -52,7 +52,7 @@ class ViewItem extends PureComponent {
             <div>
               {console.log('view', this.state.View)}
               {console.log('record', record)}
-              <Link onClick={() => this.showPartitionViewModal(record._id)}>查看</Link>
+              <a onClick={() => this.showPartitionViewModal(record._id)}>查看</a>
               <Modal
                 title="查看单品分区"
                 visible={this.state.partitionViewVisible}
@@ -236,7 +236,7 @@ class ViewItem extends PureComponent {
               {order.remark}
             </Descriptions.Item>
             <Descriptions.Item label="相应工单" span={3}>
-              {order.remark}
+            <Link to={`/order/v/view-workorder/${order._id}`}>查看工单详情</Link>
             </Descriptions.Item>
           </Descriptions>
           <div>

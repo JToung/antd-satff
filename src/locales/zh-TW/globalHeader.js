@@ -6,7 +6,7 @@ export default {
   'component.globalHeader.help': '使用手冊',
   'component.globalHeader.notification': '通知',
   'component.globalHeader.notification.empty': '妳已查看所有通知',
-  'component.globalHeader.message': '消息',
+  'component.globalHeader.message': '未读消息',
   'component.globalHeader.message.empty': '您已讀完所有消息',
   'component.globalHeader.event': '待辦',
   'component.globalHeader.event.empty': '妳已完成所有待辦',

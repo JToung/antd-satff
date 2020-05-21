@@ -26,6 +26,7 @@ import {
 // import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import memoryUtils from '@/utils/memoryUtils';
+import { IdCodeValid } from '@/utils/utils';
 
 import styles from './TableList.less';
 
@@ -41,6 +42,109 @@ const getValue = obj =>
 const statusMap = ['error', 'success'];
 const status = ['未运行', '正在运行'];
 
+/*
+  返回新建运营商model
+*/
+const NewForm = Form.create()(props => {
+  const { newViewVisible, form, handleNewViewOk, handleNewViewCancel } = props;
+  const { getFieldDecorator } = form;
+  const okHandle = () => {
+    form.validateFields((err,fieldsValue) => {
+      if (err) return;
+      handleNewViewOk(fieldsValue);
+      console.log('fieldsValue', fieldsValue);
+    });
+  };
+
+  return (
+    <Modal
+      title="填写新建运营商内容"
+      visible={newViewVisible}
+      onOk={okHandle}
+      onCancel={handleNewViewCancel}
+      width={720}
+    >
+      <Form layout="vertical">
+        <Card bordered={false}>
+          <Row gutter={16}>
+            <Col lg={24} md={12} sm={24}>
+              <Form.Item label="运营商名">
+                {getFieldDecorator('operatorName', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入运营商名',
+                    },
+                    { max: 100, message: '名称过长！' },
+                  ],
+                })(<Input placeholder="请输入运营商名" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={12} md={12} sm={24}>
+              <Form.Item label="运营商法人">
+                {getFieldDecorator('legalPerson', {
+                  rules: [{ required: true, message: '请输入运营商法人名' }],
+                })(<Input placeholder="请输入运营商法人名" />)}
+              </Form.Item>
+            </Col>
+            <Col lg={12} md={12} sm={24}>
+              <Form.Item label="法人身份证信息">
+                {getFieldDecorator('legalPersonIdNo', {
+                  rules: [
+                    { required: true, message: '请输入法人身份证信息' },
+                    {
+                      validator: IdCodeValid,
+                    },
+                  ],
+                })(<Input placeholder="请输入法人身份证信息" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={12} md={12} sm={24}>
+              <Form.Item label="法人联系方式">
+                {getFieldDecorator('legalPersonPhone', {
+                  rules: [
+                    { required: true, message: '请输入法人联系方式' },
+                    {
+                      pattern: /(^[1]([3-9])[0-9]{9}$)|(^\d{3}-\d{8}|\d{4}-\d{7})/,
+                      message: '请输入正确的法人联系方式',
+                    },
+                  ],
+                })(<Input placeholder="请输入法人联系方式" />)}
+              </Form.Item>
+            </Col>
+            <Col lg={12} md={12} sm={24}>
+              <Form.Item label="法人邮箱">
+                {getFieldDecorator('legalPersonEmail', {
+                  rules: [
+                    { required: true, message: '请输入法人邮箱' },
+                    {
+                      pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
+                      message: '请输入正确的法人邮箱',
+                    },
+                  ],
+                })(<Input placeholder="请输入法人邮箱" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={24} md={12} sm={24}>
+              <Form.Item label="初始密码">
+                {getFieldDecorator('password', {
+                  rules: [{ required: true, message: '请输入初始密码' }],
+                })(<Input.Password placeholder="请输入初始密码" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+        </Card>
+      </Form>
+    </Modal>
+  );
+});
+
 /* eslint react/no-multi-comp:0 */
 @connect(({ operator, loading }) => ({
   operator,
@@ -53,6 +157,7 @@ class TableList extends PureComponent {
     modalVisible: false,
     updateModalVisible: false,
     expandForm: false,
+    newViewVisible: false,
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
@@ -133,7 +238,7 @@ class TableList extends PureComponent {
     dispatch({
       type: 'operator/fetchOperator',
     }).then(res => {
-      console.log(res)
+      console.log(res);
       this.setState({ operator: res.foundData });
     });
     console.log('operator:', this.state.operator);
@@ -232,12 +337,78 @@ class TableList extends PureComponent {
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
+              <Button
+                onClick={() => this.showNewViewModal()}
+                icon="plus"
+                type="danger"
+                style={{ marginLeft: 8 }}
+              >
+                新建
+              </Button>
+              <NewForm
+                newViewVisible={this.state.newViewVisible}
+                handleNewViewOk={this.handleNewViewOk}
+                handleNewViewCancel={this.handleNewViewCancel}
+              />
             </span>
           </Col>
         </Row>
       </Form>
     );
   }
+
+  //新建运营商
+  handleNewViewOk = (values, e) => {
+    const { dispatch } = this.props;
+    console.log(e);
+    const payload = {
+      ...values,
+      operatorAddTime: new Date().getTime(),
+      account: values.legalPersonEmail,
+      operatorState: "0",
+    };
+
+    console.log('values', payload);
+    if (e) {
+      console.log('err' + e);
+      return;
+    }
+    // if (!err) {
+    //   console.log('receive the value of input ' + values);
+    // }
+    console.log('参数', payload);
+
+    dispatch({
+      type: 'operator/addOperator',
+      payload,
+    }).then(res => {
+      console.log('res', res);
+      if (res != null) {
+        message.success('添加运营商成功！');
+        location.reload(true);
+      } else {
+        message.error('添加失败，请重试!');
+      }
+    });
+
+    this.setState({
+      newViewVisible: false,
+    });
+  };
+
+  showNewViewModal = e => {
+    console.log(e);
+    this.setState({
+      newViewVisible: true,
+    });
+  };
+
+  handleNewViewCancel = e => {
+    console.log(e);
+    this.setState({
+      newViewVisible: false,
+    });
+  };
 
   queryDate(item) {
     if (item.data != null) {

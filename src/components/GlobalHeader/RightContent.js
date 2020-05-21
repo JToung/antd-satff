@@ -8,17 +8,94 @@ import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
+import { connect } from 'dva';
 
+@connect(({ message, loading }) => ({
+  message,
+  loading: loading.effects['message/queryNews'],
+  //model
+}))
 export default class GlobalHeaderRight extends PureComponent {
+  state = {
+    notices: [],
+  };
+
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('user')) === null) {
+      message.error('未登录！！请登录！');
+      this.props.history.push('/');
+    }
+    if (JSON.parse(localStorage.getItem('user')) != null) {
+      if (JSON.parse(localStorage.getItem('user')) === 'guest') {
+        message.error('未登录！！请登录！');
+        this.props.history.push('/');
+        console.log(JSON.parse(localStorage.getItem('user')));
+      }
+      if (JSON.parse(localStorage.getItem('user')).status === 'false') {
+        message.error('未登录！！请登录！');
+        this.props.history.push('/');
+        console.log(JSON.parse(localStorage.getItem('user')));
+      }
+    }
+
+    const { dispatch } = this.props;
+    const params0 = {
+      pt: localStorage.getItem('userId'),
+      read: '0',
+    };
+
+    this.timer = setInterval(() => {
+      dispatch({
+        type: 'message/queryNews',
+        payload: params0,
+      }).then(res => {
+        console.log('res0', res);
+        if (res.status == '1') {
+          const { notices } = this.state;
+          this.setState({ notices: [] }, () => {
+            console.log('测试', notices);
+          });
+          res.findresult.map(findResult => {
+            const findResultD = {
+              description:
+                '对' +
+                this.getDetailObject(findResult) +
+                '对' +
+                this.getAction(findResult) +
+                '操作进行了' +
+                this.getResult(findResult.result) +
+                '处理',
+              datetime: findResult.timestamp,
+              title: this.getObject(findResult) + findResult.auditorName + '给你发了条消息',
+              id: findResult._id,
+              key: findResult._id,
+              type: 'message',
+            };
+            const { notices } = this.state;
+            this.setState({ notices: [...notices, findResultD] }, () => {
+            });
+          });
+        }
+      });
+    }, 1500);
+  }
+
+  // 为了防止内存泄漏  清除定时器
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   getNoticeData() {
-    const { notices = [] } = this.props;
+    // const { notices = [] } = this.props;
+    const { notices } = this.state;
+
     if (notices.length === 0) {
       return {};
     }
     const newNotices = notices.map(notice => {
       const newNotice = { ...notice };
       if (newNotice.datetime) {
-        newNotice.datetime = moment(notice.datetime).fromNow();
+        newNotice.datetime = moment(notice.datetime).format('YYYY-MM-DD HH:mm:ss');
       }
       if (newNotice.id) {
         newNotice.key = newNotice.id;
@@ -36,10 +113,90 @@ export default class GlobalHeaderRight extends PureComponent {
           </Tag>
         );
       }
+      // console.log('newNotice', newNotice);
       return newNotice;
     });
     return groupBy(newNotices, 'type');
   }
+
+  //获取发送标识
+  getObject = val => {
+    console.log('val.object', val.object);
+    switch (val.object) {
+      case 'o':
+        return '运营商';
+        break;
+      case 'p':
+        return '平台管理员';
+        break;
+      case 'z':
+        return '专才';
+        break;
+      case 'y':
+        return '用户';
+        break;
+    }
+  };
+
+  getResult = val => {
+    if (val == '1') {
+      return '通过';
+    } else if (val == '2') {
+      return '拒绝';
+    } else {
+      return '';
+    }
+  };
+
+  //获取动作标识 处理动作标识 t:提交审核，q:确认审核，p:派单，j:接单
+  getAction = val => {
+    console.log('action', val.action);
+    switch (val.action) {
+      case 't':
+        return '提交审核';
+        break;
+      case 'q':
+        return '确认审核';
+        break;
+      case 'p':
+        return '派单';
+        break;
+      case 'j':
+        return '接单';
+        break;
+    }
+  };
+
+  // 获取具体处理对象标识 c:品类	t:任务  o:运营商	z:专才 I:单品	log:工作日志  p:分区	g:工单
+  getDetailObject = val => {
+    console.log('detailObject', val.detailObject);
+    switch (val.detailObject) {
+      case 'c':
+        return '品类';
+        break;
+      case 't':
+        return '任务';
+        break;
+      case 'o':
+        return '运营商';
+        break;
+      case 'z':
+        return '专才';
+        break;
+      case 'I':
+        return '单品';
+        break;
+      case 'log':
+        return '工作日志';
+        break;
+      case 'p':
+        return '分区';
+        break;
+      case 'g':
+        return '工单';
+        break;
+    }
+  };
 
   getUnreadData = noticeData => {
     const unreadMsg = {};
@@ -72,15 +229,12 @@ export default class GlobalHeaderRight extends PureComponent {
       onNoticeClear,
       theme,
     } = this.props;
+    const { notices } = this.state;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="userCenter">
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
-        </Menu.Item>
-        <Menu.Item key="userinfo">
-          <Icon type="setting" />
-          <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
         </Menu.Item>
         <Menu.Item key="triggerError">
           <Icon type="close-circle" />
@@ -101,21 +255,6 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     return (
       <div className={className}>
-        <HeaderSearch
-          className={`${styles.action} ${styles.search}`}
-          placeholder={formatMessage({ id: 'component.globalHeader.search' })}
-          dataSource={[
-            formatMessage({ id: 'component.globalHeader.search.example1' }),
-            formatMessage({ id: 'component.globalHeader.search.example2' }),
-            formatMessage({ id: 'component.globalHeader.search.example3' }),
-          ]}
-          onSearch={value => {
-            console.log('input', value); // eslint-disable-line
-          }}
-          onPressEnter={value => {
-            console.log('enter', value); // eslint-disable-line
-          }}
-        />
         <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
           <a
             target="_blank"
@@ -128,47 +267,27 @@ export default class GlobalHeaderRight extends PureComponent {
         </Tooltip>
         <NoticeIcon
           className={styles.action}
-          count={currentUser.unreadCount}
+          count={notices.length}
           onItemClick={(item, tabProps) => {
             console.log(item, tabProps); // eslint-disable-line
             this.changeReadState(item, tabProps);
           }}
           loading={fetchingNotices}
           locale={{
-            emptyText: formatMessage({ id: 'component.noticeIcon.empty' }),
-            clear: formatMessage({ id: 'component.noticeIcon.clear' }),
             viewMore: formatMessage({ id: 'component.noticeIcon.view-more' }),
-            notification: formatMessage({ id: 'component.globalHeader.notification' }),
             message: formatMessage({ id: 'component.globalHeader.message' }),
-            event: formatMessage({ id: 'component.globalHeader.event' }),
           }}
-          onClear={onNoticeClear}
           onPopupVisibleChange={onNoticeVisibleChange}
-          onViewMore={() => message.info('Click on view more')}
+          onViewMore={() => {
+            this.props.history.push('/messages');
+            location.reload(true);
+          }}
           clearClose
         >
-          <NoticeIcon.Tab
-            count={unreadMsg.notification}
-            list={noticeData.notification}
-            title="notification"
-            emptyText={formatMessage({ id: 'component.globalHeader.notification.empty' })}
-            emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"
-            showViewMore
-          />
           <NoticeIcon.Tab
             count={unreadMsg.message}
             list={noticeData.message}
             title="message"
-            emptyText={formatMessage({ id: 'component.globalHeader.message.empty' })}
-            emptyImage="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"
-            showViewMore
-          />
-          <NoticeIcon.Tab
-            count={unreadMsg.event}
-            list={noticeData.event}
-            title="event"
-            emptyText={formatMessage({ id: 'component.globalHeader.event.empty' })}
-            emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             showViewMore
           />
         </NoticeIcon>

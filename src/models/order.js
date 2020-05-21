@@ -1,4 +1,4 @@
-import { queryOrder,queryWorkorder, queryPartition, queryAssign, assignPost } from '@/services/api';
+import { queryOrder,queryWorkorder, queryPartition, queryAssign, assignPost, queryLog } from '@/services/api';
 
 export default {
   namespace: 'order',
@@ -57,6 +57,16 @@ export default {
         payload: response,
       });
       console.log('assignPost', response);
+      return response;
+    },
+    *queryLog({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryLog, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryLog', response);
       return response;
     },
   },

@@ -1,4 +1,4 @@
-import { queryOperator , queryAdjust, verifyOperator , queryContract, addContract} from '@/services/api';
+import { queryOperator , queryAdjust, verifyOperator , queryContract, addContract, addOperator } from '@/services/api';
 
 export default {
   namespace: 'operator',
@@ -58,6 +58,16 @@ export default {
         payload: response,
       });
       console.log('addContract',response);
+      return response;
+    },
+    *addOperator({ payload }, { call, put }) {
+      console.log('addOperatorload1',payload);
+      const response = yield call(addOperator, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('addOperator',response);
       return response;
     },
     // *upOperator({ payload }, { call, put }) {

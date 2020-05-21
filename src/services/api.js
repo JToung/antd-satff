@@ -223,7 +223,15 @@ export async function addContract(params) {
   });
 }
 
-//查看工单
+//添加运营商
+export async function addOperator(params) {
+  return request(`${OPERATOR_URL}/manager/addoperator`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+//订单查工单
 export async function queryWorkorder(params) {
   console.log('api', params);
   return request(`${platform_URL}/platform/queryworkorder?${stringify(params)}`);
@@ -241,8 +249,6 @@ export async function queryPartition(params) {
   return request(`${OPERATOR_URL}/manager/querypartition?_id=${params.id}`);
 }
 
-
-
 //分单-专才列表 传入工单id
 export async function queryAssign(params) {
   console.log('api', params);
@@ -258,6 +264,17 @@ export async function assignPost(params) {
   });
 }
 
+//查看任务分区 传入工单id
+export async function queryLog(params) {
+  console.log('api', params);
+  return request(`${OPERATOR_URL}/manager/checklog?${stringify(params)}`);
+}
+
+//查看现金流量表
+export async function queryCash(params) {
+  console.log('api', params);
+  return request(`${platform_URL}/platform/querycash?${stringify(params)}`);
+}
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');

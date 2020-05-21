@@ -39,6 +39,16 @@ export default {
       console.log('IMGresponse1',response);
       return response;
     },
+    *queryCash({ payload }, { call, put }) {
+      console.log('save',payload);
+      const response = yield call(queryCash, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryCash',response);
+      return response;
+    },
   },
 
   

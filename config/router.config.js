@@ -199,6 +199,11 @@ export default [
                 name: 'view-order',
                 component: './Order/details/view',
               },
+              {
+                path: '/order/v/view-workorder/:_id',
+                name: 'view-workorder',
+                component: './Order/details/view-work',
+              },
             ],
           },
           
