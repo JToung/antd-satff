@@ -74,14 +74,15 @@ class TableListItem extends PureComponent {
       title: '单品简介',
       dataIndex: 'itemIntroduction',
       key: 'itemIntroduction',
+      width:200,
     },
     {
       title: '单品状态',
       dataIndex: 'itemState',
       key: 'itemState',
+      width:120,
       render(val) {
-        // return <Badge status={statusMap[val]} text={status[val]} />;
-        return <Badge status={'success'} text={'已上架'} />;
+        return <Badge status={statusMap[val]} text={status[val]} />;
       },
     },
     {
@@ -98,25 +99,16 @@ class TableListItem extends PureComponent {
     },
     {
       title: '操作',
+      width:200,
       render: val => (
         <Fragment>
-          {console.log('val',val)}
-          <Link to={`/item/editor-item/${val._id}`}>审核</Link>
           <Divider type="vertical" />
-          <Link to={`/item/view-item/${val._id}`}>查看</Link>
+          <Link to={`/item/v/view-item/${val._id}`}>查看</Link>
           <Divider type="vertical" />
         </Fragment>
       ),
     },
   ];
-
-  initialValue(val){
-    if(val.itemState =="0"){
-      return <Link to={`/item/uporoff-item/${val._id}`}>上架</Link>
-    }else if(val.itemState =="1"){
-      return <Link to={`/item/uporoff-item/${val._id}`}>下架</Link>
-    }
-  }
 
   componentDidMount() {
     if (JSON.parse(localStorage.getItem('user')) === null) {
@@ -136,64 +128,24 @@ class TableListItem extends PureComponent {
       }
     }
     const { dispatch } = this.props;
-    const params = {
-      operatorID: localStorage.getItem('userId'),
-    };
+    
     dispatch({
       type: 'item/fetchItem',
-      payload: params,
     }).then( res => {
-      console.log('res',res);
       this.setState({ Item : res.findResult})
     });
   }
 
-  handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
-
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      console.log('key', key);
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
-
-    const params = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
-      operatorID: localStorage.getItem('userId'),
-      ...formValues,
-      ...filters,
-    };
-    if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
-    }
-
-    // dispatch({
-    //   type: 'rule/fetch',
-    //   payload: params,
-    // });
-    dispatch({
-      type: 'item/fetchItem',
-      payload: params,
-    }).then( res => {
-      this.setState({ Item : res.findResult})
-    });
-  };
-
+  
   handleFormReset = () => {
     const { form, dispatch } = this.props;
     form.resetFields();
     this.setState({
       formValues: {},
     });
-    const params = {
-      operatorID: localStorage.getItem('userId'),
-    };
+
     dispatch({
       type: 'item/fetchItem',
-      payload: params,
     }).then( res => {
       this.setState({ Item : res.findResult})
     });
@@ -236,7 +188,6 @@ class TableListItem extends PureComponent {
       // });
       const payload = {
         ...values,
-        operatorID: localStorage.getItem('userId'),
       };
       console.log('payload',payload);
       dispatch({
@@ -264,7 +215,7 @@ class TableListItem extends PureComponent {
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="审核状态">
+            <FormItem label="上架状态">
               {getFieldDecorator('itemState')(
                 <Select placeholder="请选择">
                   <Option value="0">未上架</Option>
@@ -309,15 +260,8 @@ class TableListItem extends PureComponent {
         <Card bordered={false} loading={loading}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
-            {/* <div className={styles.tableListOperator}>
-              <Link to="/item/new-item">
-                <Button icon="plus" type="primary">
-                  {console.log(this.props.history)}
-                  新建
-                </Button>
-              </Link>
-
-            </div> */}
+            <div className={styles.tableListOperator}>
+            </div>
             <Table
               selectedRows={selectedRows}
               rowKey="_id"
@@ -325,9 +269,8 @@ class TableListItem extends PureComponent {
               dataSource={this.queryDate(Item)}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
             />
-            {console.log('categoryList', item.data.res)}
+            {/* {console.log('categoryList', item.data.res)} */}
           </div>
         </Card>
       </div>

@@ -5,7 +5,7 @@ import ajax from './ajax';
 
 //查询信息
 export async function queryNews(params) {
-  console.log('api', params);
+  // console.log('api', params);
   return request(
     `${OPERATOR_URL}/manager/getnews?receiveId=${params.pt}&read=${
       params.read
@@ -15,13 +15,13 @@ export async function queryNews(params) {
 
 //查询单个信息
 export async function queryOneNews(params) {
-  console.log('queryOneNews', params.id);
+  // console.log('queryOneNews', params.id);
   return request(`${OPERATOR_URL}/manager/getnews?_id=${params.id}`);
 }
 
 //更新消息已读
 export async function setRead(params) {
-  console.log('setRead', params.id);
+  // console.log('setRead', params.id);
   return request(`${OPERATOR_URL}/manager/setread?_id=${params.id}`, {
     method: 'POST',
     body: params,

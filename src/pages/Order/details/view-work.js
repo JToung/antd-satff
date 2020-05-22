@@ -72,7 +72,7 @@ class ViewItem extends PureComponent {
                 title="查看任务详情"
                 visible={logViewVisible}
                 onOk={this.handleLogViewOk}
-                onCancel={this.handleLogCancel}
+                onCancel={this.handleLogViewCancel}
                 width={720}
               >
                 <Descriptions bordered layout="vertical">

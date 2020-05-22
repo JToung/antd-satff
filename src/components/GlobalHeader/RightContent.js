@@ -49,11 +49,11 @@ export default class GlobalHeaderRight extends PureComponent {
         type: 'message/queryNews',
         payload: params0,
       }).then(res => {
-        console.log('res0', res);
+        // console.log('res0', res);
         if (res.status == '1') {
           const { notices } = this.state;
           this.setState({ notices: [] }, () => {
-            console.log('测试', notices);
+            // console.log('测试', notices);
           });
           res.findresult.map(findResult => {
             const findResultD = {
@@ -121,7 +121,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
   //获取发送标识
   getObject = val => {
-    console.log('val.object', val.object);
+    // console.log('val.object', val.object);
     switch (val.object) {
       case 'o':
         return '运营商';
@@ -150,7 +150,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
   //获取动作标识 处理动作标识 t:提交审核，q:确认审核，p:派单，j:接单
   getAction = val => {
-    console.log('action', val.action);
+    // console.log('action', val.action);
     switch (val.action) {
       case 't':
         return '提交审核';
@@ -169,7 +169,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
   // 获取具体处理对象标识 c:品类	t:任务  o:运营商	z:专才 I:单品	log:工作日志  p:分区	g:工单
   getDetailObject = val => {
-    console.log('detailObject', val.detailObject);
+    // console.log('detailObject', val.detailObject);
     switch (val.detailObject) {
       case 'c':
         return '品类';

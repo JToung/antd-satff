@@ -131,6 +131,28 @@ export default [
             component: './Item/analysis',
           },
           {
+            path: '/item/v',
+            name: 'v',
+            component: './Item/TableList-v/item',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/item/v',
+                redirect: '/item/v/list',
+              },
+              {
+                path: '/item/v/list',
+                name: 'list',
+                component: './Item/TableList-v/item-list',
+              },
+              {
+                path: '/item/v/view-item/:_id',
+                name: 'view-item',
+                component: './Item/TableList-v/details/view',
+              },
+            ],
+          },
+          {
             path: '/item/e',
             name: 'e',
             component: './Item/item',
