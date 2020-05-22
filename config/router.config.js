@@ -51,6 +51,11 @@ export default [
               },
             ],
           },
+          {
+            path: '/staff/cashflow',
+            name: 'cashflow',
+            component: './Staff/Center/cashflow',
+          },
         ],
       },
       //category
@@ -206,7 +211,6 @@ export default [
               },
             ],
           },
-          
         ],
       },
       {

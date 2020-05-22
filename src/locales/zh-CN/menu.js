@@ -4,6 +4,7 @@ export default {
   'menu.staff.center': '平台管理中心',
   'menu.staff.center.info': '平台管理人员基础信息',
   'menu.staff.center.update': '平台管理人员信息修改',
+  'menu.staff.cashflow': '应收应付管理',
   'menu.item': '服务单品包管理',
   'menu.item.home': '服务单品数据管理',
   'menu.item.info': '服务单品数据分析',

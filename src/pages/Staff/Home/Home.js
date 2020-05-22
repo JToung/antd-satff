@@ -156,11 +156,11 @@ class OperatorHome extends Component {
             selectDate={this.selectDate}
           />
         </Suspense>
-        <div>
+        {/* <div>
           <Suspense fallback={null}>
             <CashFlowCard />
           </Suspense>
-        </div>
+        </div> */}
       </GridContent>
     );
   }

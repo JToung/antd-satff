@@ -146,11 +146,11 @@ class AnalysisItem extends Component {
             selectDate={this.selectDate}
           />
         </Suspense>
-        <div>
+        {/* <div>
           <Suspense fallback={null}>
             <ListCard />
           </Suspense>
-        </div>
+        </div> */}
       </GridContent>
     );
   }

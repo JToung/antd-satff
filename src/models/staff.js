@@ -1,4 +1,4 @@
-import { queryStaff , updateOperator , uplegalPersonPhoto} from '@/services/api';
+import { queryStaff , updateOperator , uplegalPersonPhoto, queryCash} from '@/services/api';
 
 export default {
   namespace: 'staff',

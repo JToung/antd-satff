@@ -18,74 +18,74 @@ export default {
 
   effects: {
     *fetchCategory({ payload }, { call, put }) {
-      console.log('payload', payload);
+      // console.log('payload', payload);
       const response = yield call(queryCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('queryCategory', response);
+      // console.log('queryCategory', response);
       return response;
     },
     *addCategory({ payload }, { call, put }) {
-      console.log('addCategoryPayload', payload);
+      // console.log('addCategoryPayload', payload);
       const response = yield call(addCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('addCategoryResponse', response);
+      // console.log('addCategoryResponse', response);
       return response;
     },
     *editorCategory({ payload }, { call, put }) {
-      console.log('editorCategoryPayload', payload);
+      // console.log('editorCategoryPayload', payload);
       const response = yield call(editorCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('editorCategoryResponse', response);
+      // console.log('editorCategoryResponse', response);
       return response;
     },
     *deleteCategory({ payload }, { call, put }) {
-      console.log('deleteCategoryPayload', payload);
+      // console.log('deleteCategoryPayload', payload);
       const response = yield call(deleteCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('deleteCategoryResponse', response);
+      // console.log('deleteCategoryResponse', response);
       return response;
     },
     *uporoffCategory({ payload }, { call, put }) {
-      console.log('uporoffCategoryPayload', payload);
+      // console.log('uporoffCategoryPayload', payload);
       const response = yield call(uporoffCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('uporoffCategoryResponse', response);
+      // console.log('uporoffCategoryResponse', response);
       return response;
     },
     //审核
     *fetchAdjust({ payload }, { call, put }) {
-      console.log('payload1', payload);
+      // console.log('payload1', payload);
       const response = yield call(queryAdjust, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('queryAdjust1', response);
+      // console.log('queryAdjust1', response);
       return response;
     },
     *verifyCategory({ payload }, { call, put }) {
-      console.log('payload1', payload);
+      // console.log('payload1', payload);
       const response = yield call(verifyCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      console.log('verifyCategory', response);
+      // console.log('verifyCategory', response);
       return response;
     },
   },
