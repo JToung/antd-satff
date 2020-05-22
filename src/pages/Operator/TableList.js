@@ -300,7 +300,9 @@ class TableList extends PureComponent {
         type: 'operator/fetchOperator',
         payload: payload,
       }).then(res => {
-        this.setState({ operator: res.foundData });
+        if(res.status != '0'){
+          this.setState({ operator: res.foundData });
+        }
       });
     });
   };
@@ -411,9 +413,9 @@ class TableList extends PureComponent {
   };
 
   queryDate(item) {
-    if (item.data != null) {
+    if (item != null) {
       this.setState();
-      return item.data.findResult;
+      return item;
     } else {
       return item;
     }
