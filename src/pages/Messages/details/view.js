@@ -139,7 +139,7 @@ class View extends PureComponent {
         return (
           <a
             onClick={() => {
-              this.props.history.push(`/item/view-item/${messageData.detailObjectId}`);
+              this.props.history.push(`/item/e/list`);
             }}
           >
             查看
@@ -176,7 +176,7 @@ class View extends PureComponent {
         return messageData.verifiedData.changedData.categoryReason;
         break;
       case 'I':
-        return ' ';
+        return messageData.verifiedData.changedData.itemReason;
         break;
       // case 'z':
       //   console.log('messageData111', messageData.reason);

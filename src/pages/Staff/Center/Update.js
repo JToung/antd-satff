@@ -18,12 +18,12 @@ import styles from './style.less';
 import { connect } from 'dva';
 import { UploadOutlined } from '@ant-design/icons';
 import { IdCodeValid } from '@/utils/utils';
-import { OPERATOR_URL } from '@/utils/Constants';
+import { OPERATOR_URL, platform_URL } from '@/utils/Constants';
 import UploadlegalPersonPhoto from './UploadlegalPersonPhoto';
 
-@connect(({ operator, loading }) => ({
-  operator,
-  loading: loading.effects['operator/fetchOperator'],
+@connect(({ staff, loading }) => ({
+  staff,
+  loading: loading.effects['staff/fetchStaff'],
   //model
 }))
 @Form.create()
@@ -33,6 +33,7 @@ class Update extends PureComponent {
     previewImage: '',
     previewTitle: '',
     fileList: [],
+    staff: {},
   };
   componentDidMount() {
     if (JSON.parse(localStorage.getItem('user')) === null) {
@@ -56,8 +57,12 @@ class Update extends PureComponent {
     const { params } = match;
     // const { dispatch } = this.props;
     dispatch({
-      type: 'operator/fetchOperator',
+      type: 'staff/fetchStaff',
       payload: params.id || localStorage.getItem('userId'),
+    }).then(res => {
+      if (res.status == '1') {
+        this.setState({ staff: res.result });
+      }
     });
     // console.log('this.props.data',this.props.data);
   }
@@ -70,9 +75,9 @@ class Update extends PureComponent {
     this.props.form.validateFields((err, values) => {
       const payload = {
         ...values,
-        operatorReviseTime: new Date().getTime(),
+        staffReviseTime: new Date().getTime(),
         id: localStorage.getItem('userId'),
-        account: values.legalPersonEmail,
+        account: values.email,
       };
 
       console.log('values', values);
@@ -86,7 +91,7 @@ class Update extends PureComponent {
       console.log('参数', payload);
 
       dispatch({
-        type: 'operator/upOperator',
+        type: 'staff/updatetaff',
         payload,
       }).then(res => {
         console.log('res', res);
@@ -109,11 +114,11 @@ class Update extends PureComponent {
       wrapperCol: { offset: 2, span: 8 },
     };
     const {
-      operator = {},
       loading,
       form: { getFieldDecorator },
     } = this.props;
-    console.log(operator);
+    const { staff } = this.state;
+    console.log(staff);
     return (
       // 加头部
       <Card bordered={false} title="平台管理人员基础信息修改">
@@ -121,13 +126,13 @@ class Update extends PureComponent {
           <Row gutter={16}>
             <Col lg={8} md={12} sm={24}>
               <Form.Item label="平台管理人员ID">
-                <span className="ant-form-text">{operator.data._id}</span>
+                <span className="ant-form-text">{staff._id}</span>
               </Form.Item>
             </Col>
             <Col xl={{ span: 8 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
               <Form.Item label="平台管理人员名">
                 {getFieldDecorator('operatorName', {
-                  initialValue: operator.data.operatorName,
+                  initialValue: staff.name,
                   rules: [
                     {
                       required: true,
@@ -139,23 +144,23 @@ class Update extends PureComponent {
               </Form.Item>
             </Col>
             <Col xl={{ span: 8 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-              <Form.Item label="头像">
-                {getFieldDecorator('legalPersonPhoto', {
-                  rules: [{ required: true, message: '请上传头像' }],
-                })(<UploadlegalPersonPhoto name={'legalPersonPhoto'} />)}
+              <Form.Item label="平台管理人员证件照">
+                {getFieldDecorator('photo', {
+                  rules: [{ required: true, message: '请上传平台管理人员证件照' }],
+                })(<UploadlegalPersonPhoto name={'photo'} />)}
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col xl={{ span: 12 }} lg={{ span: 24 }} md={{ span: 12 }} sm={24}>
               <Form.Item label="注册时间">
-                <span className="ant-form-text">{operator.data.operatorAddTime}</span>
+                <span className="ant-form-text">{staff.joinTime}</span>
               </Form.Item>
             </Col>
             <Col xl={{ span: 12 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
               <Form.Item label="平台管理人员邮箱">
-                {getFieldDecorator('legalPersonEmail', {
-                  initialValue: operator.data.legalPersonEmail,
+                {getFieldDecorator('email', {
+                  initialValue: staff.email,
                   rules: [
                     { required: true, message: '请输入平台管理人员邮箱' },
                     {
@@ -168,10 +173,10 @@ class Update extends PureComponent {
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col lg={12} md={12} sm={24}>
+            {/* <Col lg={12} md={12} sm={24}>
               <Form.Item label="平台管理人员身份证">
                 {getFieldDecorator('legalPersonIdNo', {
-                  initialValue: operator.data.legalPersonIdNo,
+                  initialValue: staff.legalPersonIdNo,
                   rules: [
                     { required: true, message: '请输入平台管理人员身份证' },
                     {
@@ -180,11 +185,11 @@ class Update extends PureComponent {
                   ],
                 })(<Input />)}
               </Form.Item>
-            </Col>
-            <Col xl={{ span: 12 }} lg={{ span: 12 }} md={{ span: 12 }} sm={24}>
+            </Col> */}
+            <Col xl={{ span: 24 }} lg={{ span: 12 }} md={{ span: 12 }} sm={24}>
               <Form.Item label="平台管理人员联系方式">
-                {getFieldDecorator('legalPersonPhone', {
-                  initialValue: operator.data.legalPersonPhone,
+                {getFieldDecorator('phone', {
+                  initialValue: staff.phone,
                   rules: [
                     { required: true, message: '请输入平台管理人员联系方式' },
                     {
@@ -192,16 +197,6 @@ class Update extends PureComponent {
                       message: '请输入正确的平台管理人员联系方式',
                     },
                   ],
-                })(<Input />)}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col lg={{ span: 24 }} md={{ span: 12 }} sm={24}>
-              <Form.Item label="平台管理人员地址">
-                {getFieldDecorator('legalPersonAdress', {
-                  initialValue: operator.data.legalPersonAdress,
-                  rules: [{ required: true, message: '请输入平台管理人员地址' }],
                 })(<Input />)}
               </Form.Item>
             </Col>

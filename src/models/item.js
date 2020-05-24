@@ -10,6 +10,9 @@ import {
   upPartition,
   upInterrupt,
   upTask,
+  queryAdjust,
+  verifyItem,
+  queryItemList
 } from '@/services/api';
 
 export default {
@@ -29,6 +32,16 @@ export default {
         payload: response,
       });
       console.log('queryItem', response);
+      return response;
+    },
+    *queryItemList({ payload }, { call, put }) {
+      console.log('queryItemListpayload', payload);
+      const response = yield call(queryItemList, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryItemList', response);
       return response;
     },
     *fetchByItem({ payload }, { call, put }) {
@@ -129,6 +142,27 @@ export default {
         payload: response,
       });
       console.log('upTaskResponse', response);
+      return response;
+    },
+    //审核
+    *fetchAdjust({ payload }, { call, put }) {
+      // console.log('payload1', payload);
+      const response = yield call(queryAdjust, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      // console.log('queryAdjust1', response);
+      return response;
+    },
+    *verifyItem({ payload }, { call, put }) {
+      console.log('verifyItempayload1', payload);
+      const response = yield call(verifyItem, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('verifyItem', response);
       return response;
     },
     // *uporoffCategory({ payload }, { call, put }) {

@@ -38,8 +38,8 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = [ 'warning', 'success','error'];
-const status = ['未审核', '审核通过','审核未通过' ];
+const statusMap = ['warning', 'success', 'error'];
+const status = ['未审核', '审核通过', '审核未通过'];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ category, loading }) => ({
@@ -122,20 +122,22 @@ class TableList extends PureComponent {
     }).then(res => {
       console.log('res：', res);
       console.log('queryadjust', this.state.queryadjust);
-      res.findResult.map(findResult => {
-        const findResultD = {
-          categoryName: findResult.changedData.categoryName,
-          auditTime: findResult.auditTime,
-          id: findResult.objectId,
-          auditStatus: findResult.auditStatus,
-          timestamp: findResult.timestamp,
-          _id: findResult._id,
-        };
-        const { queryadjust } = this.state;
-        this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
-          console.log('测试');
+      if (res.status == '1') {
+        res.findResult.map(findResult => {
+          const findResultD = {
+            categoryName: findResult.changedData.categoryName,
+            auditTime: findResult.auditTime,
+            id: findResult.objectId,
+            auditStatus: findResult.auditStatus,
+            timestamp: findResult.timestamp,
+            _id: findResult._id,
+          };
+          const { queryadjust } = this.state;
+          this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
+            console.log('测试');
+          });
         });
-      });
+      }
       console.log('queryadjust', this.state.queryadjust);
     });
     console.log('queryadjust', this.state.queryadjust);
@@ -159,20 +161,22 @@ class TableList extends PureComponent {
       this.setState({ queryadjust: [] }, () => {
         console.log('handleFormReset');
       });
-      res.findResult.map(findResult => {
-        const findResultD = {
-          categoryName: findResult.changedData.categoryName,
-          auditTime: findResult.auditTime,
-          id: findResult.objectId,
-          auditStatus: findResult.auditStatus,
-          timestamp: findResult.timestamp,
-          _id: findResult._id,
-        };
-        const { queryadjust } = this.state;
-        this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
-          console.log('测试');
+      if (res.status == '1') {
+        res.findResult.map(findResult => {
+          const findResultD = {
+            categoryName: findResult.changedData.categoryName,
+            auditTime: findResult.auditTime,
+            id: findResult.objectId,
+            auditStatus: findResult.auditStatus,
+            timestamp: findResult.timestamp,
+            _id: findResult._id,
+          };
+          const { queryadjust } = this.state;
+          this.setState({ queryadjust: [...queryadjust, findResultD] }, () => {
+            console.log('测试');
+          });
         });
-      });
+      }
       console.log('queryadjust', this.state.queryadjust);
     });
   };
@@ -248,10 +252,6 @@ class TableList extends PureComponent {
         formValues: values,
       });
 
-      // dispatch({
-      //   type: 'rule/fetch',
-      //   payload: values,
-      // });
       const payload = {
         ...values,
       };
@@ -265,10 +265,8 @@ class TableList extends PureComponent {
           console.log('handleSearch');
         });
         if (res.status == '3') {
-          this.setState({ queryadjust: [] }, () => {
-            console.log('handleSearch2');
-          });
-        } else {
+          this.setState({ queryadjust: [] });
+        } else if (res.status == '1') {
           res.findResult.map(findResult => {
             const findResultD = {
               categoryName: findResult.changedData.categoryName,
@@ -283,6 +281,8 @@ class TableList extends PureComponent {
               console.log('handleSearch');
             });
           });
+        }else{
+          this.setState({ queryadjust: [] });
         }
         console.log('handleSearch', this.state.queryadjust);
       });

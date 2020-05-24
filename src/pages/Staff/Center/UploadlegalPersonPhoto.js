@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Upload, Icon, message } from 'antd';
-import { OPERATOR_URL } from '@/utils/Constants';
+import { platform_URL } from '@/utils/Constants';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -71,7 +71,7 @@ class Avatar extends React.Component {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        action={`${OPERATOR_URL}/manager/addimage?_id=${localStorage.getItem('userId')}`}
+        action={`${platform_URL}/platform/addphoto?staffId=${localStorage.getItem('userId')}`}
         beforeUpload={beforeUpload}
         onChange={this.handleChange}
       >

@@ -71,12 +71,6 @@ class TableListItem extends PureComponent {
       key: 'itemName',
     },
     {
-      title: '单品简介',
-      dataIndex: 'itemIntroduction',
-      key: 'itemIntroduction',
-      width:200,
-    },
-    {
       title: '单品状态',
       dataIndex: 'itemState',
       key: 'itemState',
@@ -130,9 +124,9 @@ class TableListItem extends PureComponent {
     const { dispatch } = this.props;
     
     dispatch({
-      type: 'item/fetchItem',
+      type: 'item/queryItemList',
     }).then( res => {
-      this.setState({ Item : res.findResult})
+      this.setState({ Item : res})
     });
   }
 
@@ -145,9 +139,9 @@ class TableListItem extends PureComponent {
     });
 
     dispatch({
-      type: 'item/fetchItem',
+      type: 'item/queryItemList',
     }).then( res => {
-      this.setState({ Item : res.findResult})
+      this.setState({ Item : res})
     });
   };
 
@@ -182,10 +176,6 @@ class TableListItem extends PureComponent {
         formValues: values,
       });
 
-      // dispatch({
-      //   type: 'rule/fetch',
-      //   payload: values,
-      // });
       const payload = {
         ...values,
       };
@@ -194,7 +184,7 @@ class TableListItem extends PureComponent {
         type: 'item/fetchItem',
         payload: payload,
       }).then( res => {
-        this.setState({ Item : res.findResult})
+        this.setState({ Item : res})
       });
     });
   };
@@ -240,9 +230,9 @@ class TableListItem extends PureComponent {
   }
 
   queryDate(item) {
-    if (item.data != null) {
+    if (item != null) {
       this.setState()
-      return item.data.findResult;
+      return item;
     } else {
       return item;
     }

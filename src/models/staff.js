@@ -1,4 +1,4 @@
-import { queryStaff , updateOperator , uplegalPersonPhoto, queryCash} from '@/services/api';
+import { queryStaff , updatetaff , upPhoto, queryCash} from '@/services/api';
 
 export default {
   namespace: 'staff',
@@ -19,9 +19,9 @@ export default {
       console.log('response',response);
       return response;
     },
-    *upOperator({ payload }, { call, put }) {
+    *updatetaff({ payload }, { call, put }) {
       console.log('payload1',payload);
-      const response = yield call(updateOperator, payload);
+      const response = yield call(updatetaff, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -29,9 +29,9 @@ export default {
       console.log('response1',response);
       return response;
     },
-    *uplegalPersonPhoto({ payload }, { call, put }) {
+    *upPhoto({ payload }, { call, put }) {
       console.log('saveIMG',payload);
-      const response = yield call(uplegalPersonPhoto, payload);
+      const response = yield call(upPhoto, payload);
       yield put({
         type: 'saveIMG',
         payload: response,

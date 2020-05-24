@@ -6,7 +6,7 @@ import styles from './style.less';
 import { connect } from 'dva';
 import DescriptionList from '@/components/DescriptionList';
 import OPERATOR_USER from '@/utils/memoryUtils';
-import { OPERATOR_URL } from '@/utils/Constants';
+import { OPERATOR_URL, platform_URL } from '@/utils/Constants';
 import moment from 'moment';
 
 @connect(({ staff, loading }) => ({
@@ -17,6 +17,7 @@ import moment from 'moment';
 class Center extends PureComponent {
   state = {
     previewVisible: false,
+    staff: {},
   };
 
   componentDidMount() {
@@ -46,52 +47,53 @@ class Center extends PureComponent {
       type: 'staff/fetchStaff',
       // payload: params.id || localStorage.getItem('userId'),
       payload: params.id || localStorage.getItem('userId'),
+    }).then(res =>{
+      if(res.status == '1'){
+        this.setState({ staff: res.result });
+      }
     });
 
     console.log('this.props.data', localStorage.getItem('userId'));
   }
 
   render() {
-    const { previewVisible, previewImage } = this.state;
-    const { staff = {}, loading } = this.props;
+    const { previewVisible, previewImage,staff } = this.state;
+    const { loading } = this.props;
     console.log('staff', staff);
     console.log('this.props.data', localStorage.getItem('userId'));
     // console.log('operator.date',operator);
-    if (staff.data.result == null) {
+    if (staff._id == null) {
       return  <Card bordered={false} />;
     } else {
       return(
         // 加头部
         <Card bordered={false}>
           <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
-            <Descriptions.Item label="平台管理人员ID">{staff.data.result._id}</Descriptions.Item>
-            <Descriptions.Item label="平台管理人员名">{staff.data.result.name}</Descriptions.Item>
+            <Descriptions.Item label="平台管理人员ID">{staff._id}</Descriptions.Item>
+            <Descriptions.Item label="平台管理人员名">{staff.name}</Descriptions.Item>
             <Descriptions.Item label="平台管理人员证件照">
-              {/* <img
+              <img
                 alt="example"
                 style={{ width: 70, height: 70 }}
-                src={OPERATOR_URL + staff.data.legalPersonPhoto}
-              /> */}
+                src={platform_URL + staff.photo}
+              />
             </Descriptions.Item>
             <Descriptions.Item label="注册时间">
-              {moment(staff.data.result.joinTime)
+              {moment(staff.joinTime)
                 .subtract(8, 'hours')
                 .format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
-            <Descriptions.Item label="平台管理人员身份证号">
-              {staff.data.result.legalPersonIdNo}
-            </Descriptions.Item>
+            {/* <Descriptions.Item label="平台管理人员身份证号">
+              {staff.legalPersonIdNo}
+            </Descriptions.Item> */}
             <Descriptions.Item label="平台管理人员联系方式">
-              {staff.data.result.phone}
+              {staff.phone}
             </Descriptions.Item>
             <Descriptions.Item label="平台管理人员邮箱" span={3}>
-              {staff.data.result.email}
-            </Descriptions.Item>
-            <Descriptions.Item label="平台管理人员地址" span={3}>
-              {staff.data.result.legalPersonAdress}
+              {staff.email}
             </Descriptions.Item>
             <Descriptions.Item label="平台管理人员详细信息" span={3}>
-              {staff.data.result.introduction}
+              {staff.introduction}
             </Descriptions.Item>
           </Descriptions>
           <Card>

@@ -34,18 +34,19 @@ export async function queryStaff(id) {
   return request(`${platform_URL}/platform/querystaff?_id=${id}`);
 }
 
-export async function updateOperator(params) {
+//更新平台端
+export async function updatetaff(params) {
   console.log('api1', params);
-  return request(`${OPERATOR_URL}/manager/updateoperator?_id=${params.id}`, {
+  return request(`${platform_URL}/platform/updatestaff?staffId=${params.id}`, {
     method: 'POST',
     body: params,
   });
 }
 
-//更新法人照片
-export async function uplegalPersonPhoto(params) {
+//更新平台管理员证件照照片
+export async function upPhoto(params) {
   console.log('api1', params);
-  return request(`${OPERATOR_URL}/manager/addimage?_id=${params.id}`, {
+  return request(`${platform_URL}/platform/addphoto?staffId=${params.id}`, {
     method: 'POSTIMG',
     body: params,
   });
@@ -95,7 +96,13 @@ export async function uporoffCategory(params) {
 //查看单品列表
 export async function queryItem(params) {
   console.log('api', params);
-  return request(`${OPERATOR_URL}/manager/queryitem?${stringify(params)}`);
+  return request(`${platform_URL}/platform/queryitem?${stringify(params)}`);
+}
+
+//平台查看单品列表
+export async function queryItemList(params) {
+  console.log('api', params);
+  return request(`${platform_URL}/platform/listitem`);
 }
 
 //查看单品
@@ -189,6 +196,15 @@ export async function queryAdjust(params) {
 //params.id = 中断要求id
 export async function verifyCategory(params) {
   return request(`${platform_URL}/platform/verifycategory?_id=${params._id}`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+//审核单品
+//params.id = 中断要求id
+export async function verifyItem(params) {
+  return request(`${platform_URL}/platform/verifyitem?adjustId=${params.adjustId}`, {
     method: 'POST',
     body: params,
   });
