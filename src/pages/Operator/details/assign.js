@@ -200,6 +200,15 @@ class TableListAssign extends PureComponent {
               rowKey="_id"
               loading={loading}
               dataSource={this.queryDate(candidates)}
+              pagination={{
+                showSizeChanger: true,
+                showQuickJumper: true,
+                total: this.queryDate(candidates).length, // 数据总数
+                pageSize: 6, // 每页条数
+                showTotal: total => {
+                  return `共 ${total} 条`;
+                },
+              }}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
             />

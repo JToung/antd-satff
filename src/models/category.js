@@ -18,13 +18,13 @@ export default {
 
   effects: {
     *fetchCategory({ payload }, { call, put }) {
-      // console.log('payload', payload);
+      console.log('payload', payload);
       const response = yield call(queryCategory, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      // console.log('queryCategory', response);
+      console.log('queryCategory', response);
       return response;
     },
     *addCategory({ payload }, { call, put }) {

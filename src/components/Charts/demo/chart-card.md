@@ -26,7 +26,7 @@ ReactDOM.render(
         contentHeight={46}
       >
         <span>
-          周同比
+          周环比
           <Trend flag="up" style={{ marginLeft: 8, color: 'rgba(0,0,0,.85)' }}>
             12%
           </Trend>

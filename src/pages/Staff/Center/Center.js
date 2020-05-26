@@ -17,6 +17,7 @@ import moment from 'moment';
 class Center extends PureComponent {
   state = {
     previewVisible: false,
+    photoVisible: false,
     staff: {},
   };
 
@@ -47,8 +48,8 @@ class Center extends PureComponent {
       type: 'staff/fetchStaff',
       // payload: params.id || localStorage.getItem('userId'),
       payload: params.id || localStorage.getItem('userId'),
-    }).then(res =>{
-      if(res.status == '1'){
+    }).then(res => {
+      if (res.status == '1') {
         this.setState({ staff: res.result });
       }
     });
@@ -56,16 +57,54 @@ class Center extends PureComponent {
     console.log('this.props.data', localStorage.getItem('userId'));
   }
 
+  Out = () => {
+    dispatch({
+      type: 'login/logout',
+    });
+  };
+
+  //证件照查看
+
+  showPhotoModal = () => {
+    this.setState({
+      photoVisible: true,
+    });
+  };
+
+  handPhotoOk = e => {
+    // console.log(e);
+    this.setState({
+      photoVisible: false,
+    });
+  };
+
+  handPhotoCancel = e => {
+    // console.log(e);
+    this.setState({
+      photoVisible: false,
+    });
+  };
+
   render() {
-    const { previewVisible, previewImage,staff } = this.state;
+    const { previewVisible, previewImage, staff, photoVisible } = this.state;
     const { loading } = this.props;
     console.log('staff', staff);
     console.log('this.props.data', localStorage.getItem('userId'));
     // console.log('operator.date',operator);
     if (staff._id == null) {
-      return  <Card bordered={false} />;
+      return (
+        <Card bordered={false}>
+          <Button
+            type="danger"
+            onClick={() => this.Out()}
+            className={styles.ButtonCenter}
+          >
+            退出登录
+          </Button>
+        </Card>
+      );
     } else {
-      return(
+      return (
         // 加头部
         <Card bordered={false}>
           <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
@@ -76,7 +115,21 @@ class Center extends PureComponent {
                 alt="example"
                 style={{ width: 70, height: 70 }}
                 src={platform_URL + staff.photo}
+                onClick={this.showPhotoModal}
               />
+              <Modal
+                title="法人证件照"
+                visible={photoVisible}
+                footer={null}
+                onCancel={this.handPhotoCancel}
+                onOk={this.handPhotoOk}
+              >
+                <img
+                  alt="example"
+                  style={{ width: '100%' }}
+                  src={platform_URL + staff.photo}
+                />
+              </Modal>
             </Descriptions.Item>
             <Descriptions.Item label="注册时间">
               {moment(staff.joinTime)
@@ -86,9 +139,7 @@ class Center extends PureComponent {
             {/* <Descriptions.Item label="平台管理人员身份证号">
               {staff.legalPersonIdNo}
             </Descriptions.Item> */}
-            <Descriptions.Item label="平台管理人员联系方式">
-              {staff.phone}
-            </Descriptions.Item>
+            <Descriptions.Item label="平台管理人员联系方式">{staff.phone}</Descriptions.Item>
             <Descriptions.Item label="平台管理人员邮箱" span={3}>
               {staff.email}
             </Descriptions.Item>

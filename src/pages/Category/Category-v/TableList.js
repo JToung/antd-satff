@@ -21,7 +21,7 @@ import {
   Divider,
   Steps,
   Radio,
-  Table
+  Table,
 } from 'antd';
 // import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -56,6 +56,7 @@ class TableList extends PureComponent {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
+    category: [],
   };
 
   columns = [
@@ -110,7 +111,6 @@ class TableList extends PureComponent {
     },
   ];
 
-
   componentDidMount() {
     if (JSON.parse(localStorage.getItem('user')) === null) {
       message.error('未登录！！请登录！');
@@ -135,9 +135,13 @@ class TableList extends PureComponent {
     dispatch({
       type: 'category/fetchCategory',
       // payload: params,
+    }).then(res => {
+      console.log('res',res)
+      if (res.status == '1') {
+        this.setState({ category: res.res });
+      }
     });
   }
-
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -151,6 +155,10 @@ class TableList extends PureComponent {
     dispatch({
       type: 'category/fetchCategory',
       // payload: params,
+    }).then(res => {
+      if (res.status == '1') {
+        this.setState({ category: res.res });
+      }
     });
   };
 
@@ -196,11 +204,13 @@ class TableList extends PureComponent {
       dispatch({
         type: 'category/fetchCategory',
         payload: payload,
+      }).then(res => {
+        if (res.status == '1') {
+          this.setState({ category: res.res });
+        }
       });
     });
   };
-
-
 
   renderSimpleForm() {
     const {
@@ -243,14 +253,15 @@ class TableList extends PureComponent {
 
   queryDate(category) {
     if (category.data != null) {
-      return category.data.res;
+      return category;
     } else {
       return category;
     }
   }
 
   render() {
-    const { category = {}, loading } = this.props;
+    const { loading } = this.props;
+    const { category } = this.state;
     console.log('categoryListrender', category);
     console.log('loading', loading);
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
@@ -264,11 +275,20 @@ class TableList extends PureComponent {
               selectedRows={selectedRows}
               rowKey="_id"
               loading={loading}
-              dataSource={this.queryDate(category)}
+              dataSource={category}
+              pagination={{
+                showSizeChanger: true,
+                showQuickJumper: true,
+                total: category.length, // 数据总数
+                pageSize: 6, // 每页条数
+                showTotal: total => {
+                  return `共 ${total} 条`;
+                },
+              }}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
             />
-            {console.log('categoryList', category.data.res)}
+            {/* {console.log('categoryList', category.data.res)} */}
           </div>
         </Card>
       </div>

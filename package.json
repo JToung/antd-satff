@@ -3,6 +3,7 @@
   "version": "2.2.0",
   "description": "An out-of-box UI solution for enterprise applications",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "presite": "cd functions && npm install",
     "start": "cross-env APP_TYPE=site umi dev",

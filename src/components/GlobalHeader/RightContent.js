@@ -220,6 +220,22 @@ export default class GlobalHeaderRight extends PureComponent {
     });
   };
 
+  getname = (currentUser) =>{
+    if(currentUser.status == '1'){
+      return currentUser.result.name
+    }else{
+      return currentUser.name
+    }
+  }
+
+  getphoto = (currentUser) =>{
+    if(currentUser.status == '1'){
+      return currentUser.result.photo
+    }else{
+      return currentUser.photo
+    }
+  }
+
   render() {
     const {
       currentUser,
@@ -291,16 +307,16 @@ export default class GlobalHeaderRight extends PureComponent {
             showViewMore
           />
         </NoticeIcon>
-        {currentUser.name ? (
+        {this.getname(currentUser) ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={currentUser.avatar}
+                src={'http://47.103.1.149:7003'+ this.getphoto(currentUser)}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>{this.getname(currentUser)}</span>
             </span>
           </HeaderDropdown>
         ) : (

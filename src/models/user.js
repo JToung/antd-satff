@@ -1,4 +1,5 @@
 import { query as queryUsers, queryCurrent } from '@/services/user';
+import { queryStaff } from '@/services/api';
 
 export default {
   namespace: 'user',
@@ -16,12 +17,22 @@ export default {
         payload: response,
       });
     },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    // *fetchCurrent(_, { call, put }) {
+    //   const response = yield call(queryCurrent);
+    //   yield put({
+    //     type: 'saveCurrentUser',
+    //     payload: response,
+    //   });
+    // },
+    *queryStaff({ payload }, { call, put }) {
+      console.log('payload',payload);
+      const response = yield call(queryStaff, payload);
       yield put({
         type: 'saveCurrentUser',
         payload: response,
       });
+      console.log('saveCurrentUser',response);
+      return response
     },
   },
 

@@ -3,6 +3,89 @@ import request from '@/utils/request';
 import { OPERATOR_URL, platform_URL } from '../utils/Constants';
 import ajax from './ajax';
 
+//累计销售额
+export async function queryTotalamout() {
+  return request(`${platform_URL}/platform/totalamout`);
+}
+
+//日销售额
+export async function querySaleonday() {
+  return request(`${platform_URL}/platform/saleonday`);
+}
+
+//月销售额
+export async function querySaleMonth() {
+  return request(`${platform_URL}/platform/saleonmonth`);
+}
+
+//年销售额
+export async function querySaleYear() {
+  return request(`${platform_URL}/platform/saleronyear`);
+}
+
+
+//累计成交量
+export async function queryVolume() {
+  return request(`${platform_URL}/platform/ordervolume`);
+}
+
+//日成交量
+export async function queryVolumeOneday() {
+  return request(`${platform_URL}/platform/orderonday`);
+}
+
+//月成交量
+export async function queryVolumeMonth() {
+  return request(`${platform_URL}/platform/orderonmonth`);
+}
+
+//年成交量
+export async function queryVolumeYear() {
+  return request(`${platform_URL}/platform/countonyear`);
+}
+
+
+//累计利润
+export async function queryProfit() {
+  return request(`${platform_URL}/platform/profitvolume`);
+}
+
+//月利润
+export async function queryProfitMonth() {
+  return request(`${platform_URL}/platform/profitonmonth`);
+}
+
+//年利润
+export async function queryProfitYear() {
+  return request(`${platform_URL}/platform/profitonyear`);
+}
+
+//累计应付
+export async function queryDebt() {
+  return request(`${platform_URL}/platform/debtvolume`);
+}
+
+//月应付
+export async function queryDebtMonth() {
+  return request(`${platform_URL}/platform/debtonmonth`);
+}
+
+//年应付
+export async function queryDebtYear() {
+  return request(`${platform_URL}/platform/debtonyear`);
+}
+
+//运营商排行
+export async function queryOperatorRank() {
+  return request(`${platform_URL}/platform/operatorrank`);
+}
+
+//获取现金流中已结束的流量表
+export async function queryCash01() {
+  return request(`${platform_URL}/platform/querycash?state=1&state=0`);
+}
+
+
 //查询信息
 export async function queryNews(params) {
   // console.log('api', params);

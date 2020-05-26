@@ -6,6 +6,7 @@ import styles from './Home.less';
 import { Bar } from '@/components/Charts';
 import moment from 'moment';
 import DescriptionList from '@/components/DescriptionList';
+import TestECharst from '@/components/TestECharts/TestECharts';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -21,7 +22,7 @@ for (let i = 0; i < 7; i += 1) {
 const columns = [
   {
     title: '时间',
-    dataIndex: 'updatedAt',
+    dataIndex: 'timestamp',
     sorter: true,
     render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
   },
@@ -66,21 +67,25 @@ const dataCS = [
   },
 ];
 
-
 const SalesCard = memo(
-  ({ rangePickerValue, salesData, isActive, handleRangePickerChange, loading, selectDate }) => (
+  ({
+    rangePickerValue,
+    salesData,
+    isActive,
+    handleRangePickerChange,
+    loading,
+    selectDate,
+    VolumeDate,
+    Data,
+    dataDD,
+    OperatorRank
+  }) => (
     <Card loading={loading} bordered={false} bodyStyle={{ padding: 0 }}>
       <div className={styles.salesCard}>
         <Tabs
           tabBarExtraContent={
             <div className={styles.salesExtraWrap}>
               <div className={styles.salesExtra}>
-                <a className={isActive('today')} onClick={() => selectDate('today')}>
-                  <FormattedMessage id="app.analysis.all-day" defaultMessage="All Day" />
-                </a>
-                <a className={isActive('week')} onClick={() => selectDate('week')}>
-                  <FormattedMessage id="app.analysis.all-week" defaultMessage="All Week" />
-                </a>
                 <a className={isActive('month')} onClick={() => selectDate('month')}>
                   <FormattedMessage id="app.analysis.all-month" defaultMessage="All Month" />
                 </a>
@@ -88,33 +93,25 @@ const SalesCard = memo(
                   <FormattedMessage id="app.analysis.all-year" defaultMessage="All Year" />
                 </a>
               </div>
-              <RangePicker
-                value={rangePickerValue}
-                onChange={handleRangePickerChange}
-                style={{ width: 256 }}
-              />
             </div>
           }
           size="large"
           tabBarStyle={{ marginBottom: 24 }}
         >
           <TabPane
-            tab={<FormattedMessage id="app.analysis.sales" defaultMessage="Sales" />}
+            tab={<FormattedMessage id="app.analysis.all" defaultMessage="Sales" />}
             key="sales"
           >
             <Row>
               <Col xl={16} lg={12} md={12} sm={24} xs={24}>
                 <div className={styles.salesBar}>
-                  <Bar
-                    height={295}
-                    title={
-                      <FormattedMessage
-                        id="app.analysis.sales-trend"
-                        defaultMessage="Sales Trend"
-                      />
-                    }
-                    data={salesData}
+                  <TestECharst
+                    data={Data}
+                    DataName={['销售额', '成交量', '平台利润', '应付账款']}
+                    legend={['销售额', '成交量', '平台利润', '应付账款']}
+                    echartsTitle="趋势图"
                   />
+                  {console.log('ceshiData', Data)}
                 </div>
               </Col>
               <Col xl={8} lg={12} md={12} sm={24} xs={24}>
@@ -126,7 +123,7 @@ const SalesCard = memo(
                     />
                   </h4>
                   <ul className={styles.rankingList}>
-                    {rankingListData.map((item, i) => (
+                    {OperatorRank.map((item, i) => (
                       <li key={item.title}>
                         <span
                           className={`${styles.rankingItemNumber} ${i < 3 ? styles.active : ''}`}
@@ -146,98 +143,23 @@ const SalesCard = memo(
               </Col>
             </Row>
           </TabPane>
-          <TabPane
-            tab={<FormattedMessage id="app.analysis.volume" defaultMessage="Volume" />}
-            key="volume"
-          >
-            <Row>
-              <Col xl={16} lg={12} md={12} sm={24} xs={24}>
-                <div className={styles.salesBar}>
-                  <Bar
-                    height={292}
-                    title={
-                      <FormattedMessage
-                        id="app.analysis.volume-trend"
-                        defaultMessage="Volume Trend"
-                      />
-                    }
-                    data={salesData}
-                  />
-                </div>
-              </Col>
-              <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                <div className={styles.salesRank}>
-                  <h4 className={styles.rankingTitle}>
-                    <FormattedMessage
-                      id="app.analysis.volume-ranking"
-                      defaultMessage="Volume Ranking"
-                    />
-                  </h4>
-                  <ul className={styles.rankingList}>
-                    {rankingListData.map((item, i) => (
-                      <li key={item.title}>
-                        <span
-                          className={`${styles.rankingItemNumber} ${i < 3 ? styles.active : ''}`}
-                        >
-                          {i + 1}
-                        </span>
-                        <span className={styles.rankingItemTitle} title={item.title}>
-                          {item.title}
-                        </span>
-                        <span>{numeral(item.total).format('0,0')}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane
-            tab={<FormattedMessage id="app.analysis.receivable" defaultMessage="Receivable" />}
-            key="receivable"
-          >
-            <Row>
-              <Col xl={23} lg={12} md={12} sm={24} xs={24}>
-                <div className={styles.salesBar}>
-                  <Bar
-                    height={292}
-                    title={
-                      <FormattedMessage
-                        id="app.analysis.receivable-trend"
-                        defaultMessage="Receivable Trend"
-                      />
-                    }
-                    data={salesData}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane
-            tab={<FormattedMessage id="app.analysis.payable" defaultMessage="Payable" />}
-            key="payable"
-          >
-            <Row>
-              <Col xl={23} lg={12} md={12} sm={24} xs={24}>
-                <div className={styles.salesBar}>
-                  <Bar
-                    height={292}
-                    title={
-                      <FormattedMessage
-                        id="app.analysis.payable-trend"
-                        defaultMessage="Payable Trend"
-                      />
-                    }
-                    data={salesData}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </TabPane>
         </Tabs>
         <Card>
           <DescriptionList size="large" title="详细数据" style={{ marginBottom: 32 }}>
-            <Table columns={columns} dataSource={dataCS} style={{ padding: 10 }}/>
+            <Table
+              columns={columns}
+              dataSource={dataDD}
+              pagination={{
+                showSizeChanger: true,
+                showQuickJumper: true,
+                total: dataDD.length, // 数据总数
+                pageSize: 3, // 每页条数
+                showTotal: total => {
+                  return `共 ${total} 条`;
+                },
+              }}
+              style={{ padding: 10 }}
+            />
           </DescriptionList>
         </Card>
       </div>

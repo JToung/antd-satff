@@ -38,8 +38,15 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['lime', 'yellow', 'cyan', 'geekblue','red','green' ];
-const status = ['接单尚未变为工单', '已接单且已变为便为工单', '已接单且已分配专才', '订单确认开始','订单取消', '订单完成'];
+const statusMap = ['lime', 'yellow', 'cyan', 'geekblue', 'red', 'green'];
+const status = [
+  '接单尚未变为工单',
+  '已接单且已变为便为工单',
+  '已接单且已分配专才',
+  '订单确认开始',
+  '订单取消',
+  '订单完成',
+];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ order, loading }) => ({
@@ -96,7 +103,6 @@ class TableList extends PureComponent {
       ),
     },
   ];
-
 
   componentDidMount() {
     if (JSON.parse(localStorage.getItem('user')) === null) {
@@ -243,6 +249,16 @@ class TableList extends PureComponent {
     console.log('order', order);
     console.log('loading', loading);
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
+    //页码
+    const paginationProps = {
+      showSizeChanger: true,
+      showQuickJumper: true,
+      total: order.length, // 数据总数
+      pageSize: 6, // 每页条数
+      showTotal: total => {
+        return `共 ${total} 条`;
+      },
+    };
 
     return (
       <div>
@@ -254,6 +270,7 @@ class TableList extends PureComponent {
               rowKey="orderId"
               loading={loading}
               dataSource={this.queryDate(order)}
+              pagination={paginationProps}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
             />
