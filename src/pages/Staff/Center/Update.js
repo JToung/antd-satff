@@ -130,13 +130,13 @@ class Update extends PureComponent {
               </Form.Item>
             </Col>
             <Col xl={{ span: 8 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-              <Form.Item label="平台管理人员名">
+              <Form.Item label="平台管理人员姓名">
                 {getFieldDecorator('operatorName', {
                   initialValue: staff.name,
                   rules: [
                     {
                       required: true,
-                      message: '请输入平台管理人员名',
+                      message: '请输入平台管理人员姓名',
                     },
                     { max: 100, message: '名称过长！' },
                   ],

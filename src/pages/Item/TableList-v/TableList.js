@@ -61,11 +61,6 @@ class TableListItem extends PureComponent {
 
   columns = [
     {
-      title: '单品ID',
-      dataIndex: '_id',
-      key: '_id',
-    },
-    {
       title: '单品名称',
       dataIndex: 'itemName',
       key: 'itemName',

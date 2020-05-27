@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { Layout, message } from 'antd';
+import { Layout, message, Modal, Form, Input, Card, Row, Col } from 'antd';
 import Animate from 'rc-animate';
 import { connect } from 'dva';
 import router from 'umi/router';
 import GlobalHeader from '@/components/GlobalHeader';
 import TopNavHeader from '@/components/TopNavHeader';
 import styles from './Header.less';
+import { RocketOutlined, UserOutlined, UnlockOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
-
+@Form.create()
 class HeaderView extends Component {
   state = {
     visible: true,
+    psdVisible: false,
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -60,19 +62,64 @@ class HeaderView extends Component {
       router.push('/staff/center');
       return;
     }
-    if (key === 'triggerError') {
-      router.push('/exception/trigger');
+    if (key === 'changePsd') {
+      this.showPSDViewModal()
       return;
     }
-    if (key === 'userinfo') {
-      router.push('/account/settings/base');
-      return;
-    }
+    // if (key === 'userinfo') {
+    //   router.push('/account/settings/base');
+    //   return;
+    // }
     if (key === 'logout') {
       dispatch({
         type: 'login/logout',
       });
     }
+  };
+
+  //提交修改
+  handlePSDViewOk = e => {
+    const { dispatch } = this.props;
+    this.props.form.validateFields((err, values) => {
+      const data = {
+        ...values,
+        character: 's',
+        _id: localStorage.getItem('userId'),
+      };
+      console.log('data', data);
+
+      dispatch({
+        type: 'staff/changePsd',
+        payload: data,
+      }).then(res => {
+        console.log('res', res);
+        if (res.status == '1') {
+          message.success(res.information);
+          dispatch({
+            type: 'login/logout',
+          });
+        } else {
+          message.error(res.information);
+        }
+      });
+    });
+    this.setState({
+      psdVisible: false,
+    });
+  };
+
+  showPSDViewModal = e => {
+    console.log(e);
+    this.setState({
+      psdVisible: true,
+    });
+  };
+
+  handlePSDViewCancel = e => {
+    console.log(e);
+    this.setState({
+      psdVisible: false,
+    });
   };
 
   handleNoticeVisibleChange = visible => {
@@ -143,6 +190,42 @@ class HeaderView extends Component {
             {...this.props}
           />
         )}
+        <Modal
+          title="修改密码"
+          visible={this.state.psdVisible}
+          onOk={this.handlePSDViewOk}
+          onCancel={this.handlePSDViewCancel}
+          width={720}
+        >
+          <Form layout="vertical">
+            <Card bordered={false}>
+              <Row gutter={16}>
+                <Col lg={24} md={12} sm={24}>
+                  <Form.Item label="账号">
+                    {this.props.form.getFieldDecorator('account', {
+                      rules: [{ required: true, message: '请输入账号' }],
+                    })(<Input placeholder="请输入账号" prefix={<UserOutlined />} />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col lg={24} md={12} sm={24}>
+                  <Form.Item label="密码">
+                    {this.props.form.getFieldDecorator('password', {
+                      rules: [{ required: true, message: '请输入新密码' }],
+                    })(
+                      <Input.Password
+                        placeholder="请输入新密码"
+                        size="large"
+                        prefix={<UnlockOutlined />}
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Card>
+          </Form>
+        </Modal>
       </Header>
     ) : null;
     return (

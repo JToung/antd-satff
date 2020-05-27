@@ -252,9 +252,9 @@ export default class GlobalHeaderRight extends PureComponent {
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>
-        <Menu.Item key="triggerError">
-          <Icon type="close-circle" />
-          <FormattedMessage id="menu.account.trigger" defaultMessage="Trigger Error" />
+        <Menu.Item key="changePsd">
+          <Icon type="message" />
+          <FormattedMessage id="'menu.account.changepsd" defaultMessage="修改密码" />
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">

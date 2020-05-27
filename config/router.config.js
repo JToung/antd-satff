@@ -49,12 +49,18 @@ export default [
                 name: 'update',
                 component: './Staff/Center/Update',
               },
+              {
+                component: '404',
+              },
             ],
           },
           {
             path: '/staff/cashflow',
             name: 'cashflow',
             component: './Staff/Center/cashflow',
+          },
+          {
+            component: '404',
           },
         ],
       },
@@ -64,11 +70,11 @@ export default [
         name: 'category',
         icon: 'profile',
         routes: [
-          {
-            path: '/category/info',
-            name: 'info',
-            component: './Category/Category/analysis',
-          },
+          // {
+          //   path: '/category/info',
+          //   name: 'info',
+          //   component: './Category/Category/analysis',
+          // },
           {
             path: '/category/v',
             name: 'v',
@@ -88,6 +94,9 @@ export default [
                 path: '/category/v/view-categroy/:_id',
                 name: 'view-categroy',
                 component: './Category/Category-v/details/view',
+              },
+              {
+                component: '404',
               },
             ],
           },
@@ -116,7 +125,13 @@ export default [
                 name: 'view-categroy',
                 component: './Category/Category/details/view',
               },
+              {
+                component: '404',
+              },
             ],
+          },
+          {
+            component: '404',
           },
         ],
       },
@@ -125,11 +140,11 @@ export default [
         name: 'item',
         icon: 'profile',
         routes: [
-          {
-            path: '/item/info',
-            name: 'info',
-            component: './Item/analysis',
-          },
+          // {
+          //   path: '/item/info',
+          //   name: 'info',
+          //   component: './Item/analysis',
+          // },
           {
             path: '/item/v',
             name: 'v',
@@ -149,6 +164,9 @@ export default [
                 path: '/item/v/view-item/:_id',
                 name: 'view-item',
                 component: './Item/TableList-v/details/view',
+              },
+              {
+                component: '404',
               },
             ],
           },
@@ -192,7 +210,13 @@ export default [
                 name: 'uporoff-item',
                 component: './Item/details/uporoff',
               },
+              {
+                component: '404',
+              },
             ],
+          },
+          {
+            component: '404',
           },
         ],
       },
@@ -231,7 +255,13 @@ export default [
                 name: 'view-workorder',
                 component: './Order/details/view-work',
               },
+              {
+                component: '404',
+              },
             ],
+          },
+          {
+            component: '404',
           },
         ],
       },
@@ -240,11 +270,11 @@ export default [
         name: 'operator',
         icon: 'profile',
         routes: [
-          {
-            path: '/operator/info',
-            name: 'info',
-            component: './Operator/analysis',
-          },
+          // {
+          //   path: '/operator/info',
+          //   name: 'info',
+          //   component: './Operator/analysis',
+          // },
           {
             path: '/operator/center',
             name: 'center',
@@ -264,6 +294,9 @@ export default [
                 path: '/operator/center/view-operator/:_id',
                 name: 'view-operator',
                 component: './Operator/details/view',
+              },
+              {
+                component: '404',
               },
             ],
           },
@@ -287,7 +320,13 @@ export default [
                 name: 'view-operator',
                 component: './Operator/examine/view',
               },
+              {
+                component: '404',
+              },
             ],
+          },
+          {
+            component: '404',
           },
         ],
       },
@@ -311,6 +350,9 @@ export default [
             path: '/messages/view/:_id',
             name: 'view',
             component: './Messages/details/view',
+          },
+          {
+            component: '404',
           },
         ],
       },

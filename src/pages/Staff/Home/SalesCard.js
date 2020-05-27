@@ -23,7 +23,6 @@ const columns = [
   {
     title: '时间',
     dataIndex: 'timestamp',
-    sorter: true,
     render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
   },
   {
@@ -38,8 +37,8 @@ const columns = [
   },
   {
     title: '平台应收款',
-    dataIndex: 'serverReceivable',
-    key: 'serverReceivable',
+    dataIndex: 'systemReceivable',
+    key: 'systemReceivable',
   },
 ];
 

@@ -58,6 +58,7 @@ class Center extends PureComponent {
   }
 
   Out = () => {
+    const { dispatch } = this.props;
     dispatch({
       type: 'login/logout',
     });
@@ -109,7 +110,7 @@ class Center extends PureComponent {
         <Card bordered={false}>
           <Descriptions title="平台管理人员基础信息管理" bordered loading={loading}>
             <Descriptions.Item label="平台管理人员ID">{staff._id}</Descriptions.Item>
-            <Descriptions.Item label="平台管理人员名">{staff.name}</Descriptions.Item>
+            <Descriptions.Item label="平台管理人员姓名">{staff.name}</Descriptions.Item>
             <Descriptions.Item label="平台管理人员证件照">
               <img
                 alt="example"

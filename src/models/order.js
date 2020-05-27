@@ -1,4 +1,22 @@
-import { queryOrder,queryWorkorder, queryPartition, queryAssign, assignPost, queryLog } from '@/services/api';
+import {
+  queryOrder,
+  queryWorkorder,
+  queryPartition,
+  queryAssign,
+  assignPost,
+  queryLog,
+  queryBadOrderMonth,
+  queryBadOrder,
+  queryGoodOrder,
+  queryGoodOrderMonth,
+  queryTotalOrder,
+  queryTotalOrderYear,
+  queryTotalOrderOneday,
+  queryTotalOrderMonth,
+  queryBadOrderYear,
+  queryGoodOrderYear,
+  queryPartitonRank,
+} from '@/services/api';
 
 export default {
   namespace: 'order',
@@ -67,6 +85,116 @@ export default {
         payload: response,
       });
       console.log('queryLog', response);
+      return response;
+    },
+    *queryBadOrderMonth({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryBadOrderMonth, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryBadOrderMonth', response);
+      return response;
+    },
+    *queryBadOrder({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryBadOrder, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryBadOrder', response);
+      return response;
+    },
+    *queryGoodOrder({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryGoodOrder, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryGoodOrder', response);
+      return response;
+    },
+    *queryGoodOrderMonth({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryGoodOrderMonth, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryGoodOrderMonth', response);
+      return response;
+    },
+    *queryTotalOrder({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryTotalOrder, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryTotalOrder', response);
+      return response;
+    },
+    *queryTotalOrderYear({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryTotalOrderYear, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryTotalOrderYear', response);
+      return response;
+    },
+    *queryTotalOrderOneday({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryTotalOrderOneday, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryTotalOrderOneday', response);
+      return response;
+    },
+    *queryTotalOrderMonth({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryTotalOrderMonth, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryTotalOrderMonth', response);
+      return response;
+    },
+    *queryBadOrderYear({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryBadOrderYear, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryBadOrderYear', response);
+      return response;
+    },
+    *queryGoodOrderYear({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryGoodOrderYear, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryGoodOrderYear', response);
+      return response;
+    },
+    *queryPartitonRank({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryPartitonRank, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryPartitonRank', response);
       return response;
     },
   },

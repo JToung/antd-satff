@@ -58,11 +58,6 @@ class TableListAssign extends PureComponent {
 
   columns = [
     {
-      title: '专才ID',
-      dataIndex: '_id',
-      key: '_id',
-    },
-    {
       title: '专才名称',
       dataIndex: 'servicerName',
       key: 'servicerName',

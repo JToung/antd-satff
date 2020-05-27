@@ -3,6 +3,16 @@ import request from '@/utils/request';
 import { OPERATOR_URL, platform_URL } from '../utils/Constants';
 import ajax from './ajax';
 
+//修改密码
+export async function changePsd(params) {
+  // console.log('setRead', params.id);
+  return request(`${OPERATOR_URL}/manager/changepsd?${stringify(params)}`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+
 //累计销售额
 export async function queryTotalamout() {
   return request(`${platform_URL}/platform/totalamout`);
@@ -85,6 +95,65 @@ export async function queryCash01() {
   return request(`${platform_URL}/platform/querycash?state=1&state=0`);
 }
 
+//订单总数
+export async function queryTotalOrder() {
+  return request(`${platform_URL}/platform/ordervolume`);
+}
+
+//本年订单总数
+export async function queryTotalOrderYear() {
+  return request(`${platform_URL}/platform/countonyear`);
+}
+
+//日订单数
+export async function queryTotalOrderOneday() {
+  return request(`${platform_URL}/platform/orderonday`);
+}
+
+//本月订单总数
+export async function queryTotalOrderMonth() {
+  return request(`${platform_URL}/platform/orderonmonth`);
+}
+
+//意外中止订单 本月
+export async function queryBadOrderMonth() {
+  return request(`${platform_URL}/platform/badorderonmonth`);
+}
+
+//本年意外中止订单
+export async function queryBadOrderYear() {
+  return request(`${platform_URL}/platform/badorderonyear`);
+}
+
+//意外中止订单总数
+export async function queryBadOrder() {
+  return request(`${platform_URL}/platform/badorder`);
+}
+
+//顺利完成订单 - 本月
+export async function queryGoodOrderMonth() {
+  return request(`${platform_URL}/platform/goodorderonmonth`);
+}
+
+//顺利完成订单总数
+export async function queryGoodOrder() {
+  return request(`${platform_URL}/platform/goodorder`);
+}
+
+//本年顺利完成订单
+export async function queryGoodOrderYear() {
+  return request(`${platform_URL}/platform/goodorderonyear`);
+}
+
+//单品分区排行
+export async function queryPartitonRank() {
+  return request(`${platform_URL}/platform/partitonRank`);
+}
+
+//查看单品分区
+export async function queryPartiton(params) {
+  return request(`${OPERATOR_URL}/manager/querypartition?_id=${params.id}`);
+}
 
 //查询信息
 export async function queryNews(params) {
