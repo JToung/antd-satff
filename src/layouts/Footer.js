@@ -9,7 +9,7 @@ const FooterView = () => (
       links={[
         {
           key: 'Pro 首页',
-          title: '小微企业服务共享平台-平台端首页',
+          title: '小微企业服务共享平台-综合运营端首页',
           href: 'https://pro.ant.design',
           blankTarget: true,
         },

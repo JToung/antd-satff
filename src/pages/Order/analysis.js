@@ -115,6 +115,34 @@ class AnalysisItem extends Component {
 
     //默认Data
     this.getYearData();
+
+    //单品分区排行
+    dispatch({
+      type: 'order/queryPartitonRank',
+    }).then(res => {
+      res.map(res => {
+        const params1 = {
+          id: res._id.partition,
+        };
+        const total = res.count;
+        dispatch({
+          type: 'order/queryPartiton',
+          payload: params1,
+        }).then(res => {
+          console.log('queryPartiton', res);
+          const { PartitonRank } = this.state;
+          if (res.status == '1') {
+            const rankingListData = [];
+            rankingListData.push({
+              title: res.findResult.name,
+              total: total,
+            });
+            console.log('rankingListData', rankingListData);
+            this.setState({ PartitonRank: [...PartitonRank, rankingListData[0]] });
+          }
+        });
+      });
+    });
   }
 
   componentWillUnmount() {

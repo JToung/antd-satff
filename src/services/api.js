@@ -147,7 +147,7 @@ export async function queryGoodOrderYear() {
 
 //单品分区排行
 export async function queryPartitonRank() {
-  return request(`${platform_URL}/platform/partitonRank`);
+  return request(`${platform_URL}/platform/partitionrank`);
 }
 
 //查看单品分区

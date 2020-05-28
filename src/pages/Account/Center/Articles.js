@@ -42,7 +42,7 @@ class Center extends PureComponent {
               }
               description={
                 <span>
-                  <Tag>小微企业服务共享平台-平台端</Tag>
+                  <Tag>小微企业服务共享平台-综合运营端</Tag>
                 </span>
               }
             />

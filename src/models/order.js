@@ -16,6 +16,7 @@ import {
   queryBadOrderYear,
   queryGoodOrderYear,
   queryPartitonRank,
+  queryPartiton
 } from '@/services/api';
 
 export default {
@@ -195,6 +196,16 @@ export default {
         payload: response,
       });
       console.log('queryPartitonRank', response);
+      return response;
+    },
+    *queryPartiton({ payload }, { call, put }) {
+      console.log('payload', payload);
+      const response = yield call(queryPartiton, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      console.log('queryPartiton', response);
       return response;
     },
   },
