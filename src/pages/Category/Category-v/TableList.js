@@ -64,19 +64,16 @@ class TableList extends PureComponent {
       title: '品类名称',
       dataIndex: 'categoryName',
       key: 'categoryName',
-      width: 150,
     },
     {
       title: '品类简介',
       dataIndex: 'categoryIntrod',
       key: 'categoryIntrod',
-      width: 250,
     },
     {
       title: '上架状态',
       dataIndex: 'categoryState',
       key: 'categoryState',
-      width: 100,
       render(val) {
         return <Badge status={statusMap[val]} text={status[val]} />;
       },
@@ -95,7 +92,6 @@ class TableList extends PureComponent {
     },
     {
       title: '操作',
-      width: 100,
       render: val => (
         <Fragment>
           <Divider type="vertical" />
@@ -254,6 +250,14 @@ class TableList extends PureComponent {
     }
   }
 
+  getL(data){
+    if(data != null){
+      return data.length;
+    }else{
+      return 0;
+    }
+  }
+
   render() {
     const { loading } = this.props;
     const { category } = this.state;
@@ -274,7 +278,7 @@ class TableList extends PureComponent {
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
-                total: category.length, // 数据总数
+                total: this.getL(category), // 数据总数
                 pageSize: 6, // 每页条数
                 showTotal: total => {
                   return `共 ${total} 条`;

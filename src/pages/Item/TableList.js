@@ -607,6 +607,14 @@ class TableList extends PureComponent {
     }
   }
 
+  getL(data){
+    if(data != null){
+      return data.length;
+    }else{
+      return 0;
+    }
+  }
+
   render() {
     const { item = {}, loading } = this.props;
     const { queryadjust } = this.state;
@@ -635,7 +643,7 @@ class TableList extends PureComponent {
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
-                total: queryadjust.length, // 数据总数
+                total: this.getL(queryadjust), // 数据总数
                 pageSize: 6, // 每页条数
                 showTotal: total => {
                   return `共 ${total} 条`;

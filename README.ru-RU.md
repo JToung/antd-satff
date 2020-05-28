@@ -1,6 +1,6 @@
 [English](./README.md) | [简体中文](./README.zh-CN.md) | Русский
 
-<h1 align="center">平台端</h1>
+<h1 align="center">综合运营端</h1>
 
 <div align="center">
 

@@ -235,11 +235,19 @@ class TableList extends PureComponent {
   }
 
   queryDate(item) {
-    if (item.data != null) {
+    if (item != null) {
       this.setState();
-      return item.data.findResult;
+      return item;
     } else {
       return item;
+    }
+  }
+
+  getL(data){
+    if(data != null){
+      return data.length;
+    }else{
+      return 0;
     }
   }
 
@@ -253,7 +261,7 @@ class TableList extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      total: order.length, // 数据总数
+      total: this.getL(order), // 数据总数
       pageSize: 6, // 每页条数
       showTotal: total => {
         return `共 ${total} 条`;

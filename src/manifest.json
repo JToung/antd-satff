@@ -1,6 +1,6 @@
 {
-  "name": "平台端",
-  "short_name": "平台端",
+  "name": "综合运营端",
+  "short_name": "综合运营端",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",
