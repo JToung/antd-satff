@@ -131,7 +131,7 @@ class Update extends PureComponent {
             </Col>
             <Col xl={{ span: 8 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
               <Form.Item label="平台管理人员姓名">
-                {getFieldDecorator('operatorName', {
+                {getFieldDecorator('name', {
                   initialValue: staff.name,
                   rules: [
                     {
