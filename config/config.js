@@ -115,6 +115,8 @@ export default {
   manifest: {
     basePath: '/',
   },
-
+  history: 'hash', //采用hash路由：#/xxx的形式
+  base: '/',
+  publicPath: './',
   chainWebpack: webpackPlugin,
 };

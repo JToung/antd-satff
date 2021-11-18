@@ -7,7 +7,7 @@ import Login from '@/components/Login';
 import styles from './Login.less';
 // import CreateCode from '@/utils/utils';
 import Promptbox from '@/components/PromptBox/index';
-import { RocketOutlined, UserOutlined, UnlockOutlined } from '@ant-design/icons';
+// import { RocketOutlined, UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import { routerRedux } from 'dva/router';
 
@@ -99,7 +99,8 @@ class LoginPage extends Component {
   );
 
   getCode() {
-    if (this.state.code.verify_image != null) {
+    // console.log('this.state.code.verify_image', this.state.code.verify_image);
+    if (this.state.code.verify_image != undefined) {
       /* 转HTML语言 */
       return (
         <div
@@ -144,7 +145,7 @@ class LoginPage extends Component {
                     message: formatMessage({ id: 'validation.userName.required' }),
                   },
                 ],
-              })(<Input placeholder="请输入登录邮箱" size="large" prefix={<UserOutlined />} />)}
+              })(<Input placeholder="请输入登录邮箱" size="large" />)}
             </Form.Item>
             <Form.Item>
               {getFieldDecorator('password', {
@@ -155,9 +156,7 @@ class LoginPage extends Component {
                     message: formatMessage({ id: 'validation.password.required' }),
                   },
                 ],
-              })(
-                <Input.Password placeholder="请输入密码" size="large" prefix={<UnlockOutlined />} />
-              )}
+              })(<Input.Password placeholder="请输入密码" size="large" />)}
             </Form.Item>
             <Form.Item>
               <Row gutter={8}>
@@ -165,11 +164,9 @@ class LoginPage extends Component {
                   {getFieldDecorator('code', {
                     validateFirst: true,
                     rules: [{ required: true, message: '请输入验证码' }],
-                  })(<Input placeholder="验证码" size="large" prefix={<RocketOutlined />} />)}
+                  })(<Input placeholder="验证码" size="large" />)}
                 </Col>
-                <Col span={9}>
-                  {this.getCode()}
-                </Col>
+                <Col span={9}>{this.getCode()}</Col>
               </Row>
             </Form.Item>
           </Tab>

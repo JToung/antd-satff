@@ -7,7 +7,7 @@ import router from 'umi/router';
 import GlobalHeader from '@/components/GlobalHeader';
 import TopNavHeader from '@/components/TopNavHeader';
 import styles from './Header.less';
-import { RocketOutlined, UserOutlined, UnlockOutlined } from '@ant-design/icons';
+// import { RocketOutlined, UserOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 @Form.create()
@@ -63,7 +63,7 @@ class HeaderView extends Component {
       return;
     }
     if (key === 'changePsd') {
-      this.showPSDViewModal()
+      this.showPSDViewModal();
       return;
     }
     // if (key === 'userinfo') {
@@ -204,7 +204,7 @@ class HeaderView extends Component {
                   <Form.Item label="账号">
                     {this.props.form.getFieldDecorator('account', {
                       rules: [{ required: true, message: '请输入账号' }],
-                    })(<Input placeholder="请输入账号" prefix={<UserOutlined />} />)}
+                    })(<Input placeholder="请输入账号" />)}
                   </Form.Item>
                 </Col>
               </Row>
@@ -213,13 +213,7 @@ class HeaderView extends Component {
                   <Form.Item label="密码">
                     {this.props.form.getFieldDecorator('password', {
                       rules: [{ required: true, message: '请输入新密码' }],
-                    })(
-                      <Input.Password
-                        placeholder="请输入新密码"
-                        size="large"
-                        prefix={<UnlockOutlined />}
-                      />
-                    )}
+                    })(<Input.Password placeholder="请输入新密码" size="large" />)}
                   </Form.Item>
                 </Col>
               </Row>

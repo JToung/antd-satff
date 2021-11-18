@@ -52,6 +52,15 @@ export default config => {
       },
     ]);
   }
+  // //css的修改
+  // config.plugin('extract-css').use(require('mini-css-extract-plugin'), [
+  //   {
+  //     filename: `[name].css`,
+  //     chunkFilename: `[name].[contenthash:8].chunk.css`,
+  //   },
+  // ]);
+  // //js的修改
+  // config.output.filename('[name].js');
   // optimize chunks
   config.optimization
     .runtimeChunk(false) // share the same chunks across different modules
